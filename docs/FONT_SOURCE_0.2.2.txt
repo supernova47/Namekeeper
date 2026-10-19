@@ -1,0 +1,7 @@
+Marck Script, original unmodified font:
+https://github.com/google/fonts/tree/main/ofl/marckscript
+https://raw.githubusercontent.com/google/fonts/main/ofl/marckscript/MarckScript-Regular.ttf
+License source: https://raw.githubusercontent.com/google/fonts/main/ofl/marckscript/OFL.txt
+Metadata confirms Cyrillic/Latin and HANDWRITING: https://raw.githubusercontent.com/google/fonts/main/ofl/marckscript/METADATA.pb
+Downloaded 2026-10-17. Font/license redistributed with this project under OFL 1.1.
+Font SHA-256: 504de8cc6f919163bc9afb67b9bc208d258230c5e8d00cb82ec52474f9fafc3b

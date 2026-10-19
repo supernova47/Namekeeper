@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="GameDoubles.cs" />
+    <Compile Include="../src/ValheimNamekeeper/PersonalizedText.cs" Link="PersonalizedText.cs" />
+    <Compile Include="../src/ValheimNamekeeper/TooltipTitleUpdater.cs" Link="TooltipTitleUpdater.cs" />
+    <Compile Include="../src/ValheimNamekeeper/InventoryChangeDispatcher.cs" Link="InventoryChangeDispatcher.cs" />
+    <Compile Include="../src/ValheimNamekeeper/InventoryTransaction.cs" Link="InventoryTransaction.cs" />
+    <Compile Include="../src/ValheimNamekeeper/DialogueLines.cs" Link="DialogueLines.cs" />
+    <Compile Include="../src/ValheimNamekeeper/DialogueScheduler.cs" Link="DialogueScheduler.cs" />
+    <Compile Include="../src/ValheimNamekeeper/HudLayout.cs" Link="HudLayout.cs" />
+    <Compile Include="../src/ValheimNamekeeper/WorkshopLayout.cs" Link="WorkshopLayout.cs" />
+    <Compile Include="../src/ValheimNamekeeper/RoofRequirements.cs" Link="RoofRequirements.cs" />
+    <Compile Include="../src/ValheimNamekeeper/RecipeRequirementAmounts.cs" Link="RecipeRequirementAmounts.cs" />
+    <Compile Include="../src/ValheimNamekeeper/LightingRules.cs" Link="LightingRules.cs" />
+  </ItemGroup>
+</Project>

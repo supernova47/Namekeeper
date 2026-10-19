@@ -1,0 +1,1443 @@
+System.Boolean Player::RemovePiece()
+IL_0000: call GameCamera GameCamera::get_instance()
+IL_0005: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_000a: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_000f: call GameCamera GameCamera::get_instance()
+IL_0014: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_0019: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_forward()
+IL_001e: ldloca.s V_0
+IL_0020: ldc.r4 50
+IL_0025: ldarg.0
+IL_0026: ldfld System.Int32 Player::m_removeRayMask
+IL_002b: call System.Boolean UnityEngine.Physics::Raycast(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.RaycastHit&,System.Single,System.Int32)
+IL_0030: brfalse IL_023e
+IL_0035: ldloca.s V_0
+IL_0037: call UnityEngine.Vector3 UnityEngine.RaycastHit::get_point()
+IL_003c: ldarg.0
+IL_003d: ldfld UnityEngine.Transform Character::m_eye
+IL_0042: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_0047: call System.Single UnityEngine.Vector3::Distance(UnityEngine.Vector3,UnityEngine.Vector3)
+IL_004c: ldarg.0
+IL_004d: ldfld System.Single Player::m_maxPlaceDistance
+IL_0052: bge.un IL_023e
+IL_0057: ldloca.s V_0
+IL_0059: call UnityEngine.Collider UnityEngine.RaycastHit::get_collider()
+IL_005e: callvirt !!0 UnityEngine.Component::GetComponentInParent<Piece>()
+IL_0063: stloc.1
+IL_0064: ldloc.1
+IL_0065: ldnull
+IL_0066: call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+IL_006b: brfalse.s IL_0092
+IL_006d: ldloca.s V_0
+IL_006f: call UnityEngine.Collider UnityEngine.RaycastHit::get_collider()
+IL_0074: callvirt !!0 UnityEngine.Component::GetComponent<Heightmap>()
+IL_0079: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_007e: brfalse.s IL_0092
+IL_0080: ldloca.s V_0
+IL_0082: call UnityEngine.Vector3 UnityEngine.RaycastHit::get_point()
+IL_0087: ldc.r4 2,5
+IL_008c: call Piece TerrainModifier::FindClosestModifierPieceInRange(UnityEngine.Vector3,System.Single)
+IL_0091: stloc.1
+IL_0092: ldloc.1
+IL_0093: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0098: brfalse IL_023e
+IL_009d: ldloc.1
+IL_009e: ldfld System.Boolean Piece::m_canBeRemoved
+IL_00a3: brtrue.s IL_00a7
+IL_00a5: ldc.i4.0
+IL_00a6: ret
+IL_00a7: ldloc.1
+IL_00a8: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_00ad: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_00b2: call System.Boolean Location::IsInsideNoBuildLocation(UnityEngine.Vector3)
+IL_00b7: brfalse.s IL_00ca
+IL_00b9: ldarg.0
+IL_00ba: ldc.i4.2
+IL_00bb: ldstr "$msg_nobuildzone"
+IL_00c0: ldc.i4.0
+IL_00c1: ldnull
+IL_00c2: ldc.i4.0
+IL_00c3: callvirt System.Void Character::Message(MessageHud/MessageType,System.String,System.Int32,UnityEngine.Sprite,System.Boolean)
+IL_00c8: ldc.i4.0
+IL_00c9: ret
+IL_00ca: ldloc.1
+IL_00cb: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_00d0: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_00d5: ldc.r4 0
+IL_00da: ldc.i4.1
+IL_00db: ldc.i4.0
+IL_00dc: call System.Boolean PrivateArea::CheckAccess(UnityEngine.Vector3,System.Single,System.Boolean,System.Boolean)
+IL_00e1: brtrue.s IL_00f4
+IL_00e3: ldarg.0
+IL_00e4: ldc.i4.2
+IL_00e5: ldstr "$msg_privatezone"
+IL_00ea: ldc.i4.0
+IL_00eb: ldnull
+IL_00ec: ldc.i4.0
+IL_00ed: callvirt System.Void Character::Message(MessageHud/MessageType,System.String,System.Int32,UnityEngine.Sprite,System.Boolean)
+IL_00f2: ldc.i4.0
+IL_00f3: ret
+IL_00f4: ldarg.0
+IL_00f5: ldloc.1
+IL_00f6: call System.Boolean Player::CheckCanRemovePiece(Piece)
+IL_00fb: brtrue.s IL_00ff
+IL_00fd: ldc.i4.0
+IL_00fe: ret
+IL_00ff: ldloc.1
+IL_0100: callvirt !!0 UnityEngine.Component::GetComponent<ZNetView>()
+IL_0105: stloc.2
+IL_0106: ldloc.2
+IL_0107: ldnull
+IL_0108: call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+IL_010d: brfalse.s IL_0111
+IL_010f: ldc.i4.0
+IL_0110: ret
+IL_0111: ldloc.1
+IL_0112: callvirt System.Boolean Piece::CanBeRemoved()
+IL_0117: brtrue.s IL_012a
+IL_0119: ldarg.0
+IL_011a: ldc.i4.2
+IL_011b: ldstr "$msg_cantremovenow"
+IL_0120: ldc.i4.0
+IL_0121: ldnull
+IL_0122: ldc.i4.0
+IL_0123: callvirt System.Void Character::Message(MessageHud/MessageType,System.String,System.Int32,UnityEngine.Sprite,System.Boolean)
+IL_0128: ldc.i4.0
+IL_0129: ret
+IL_012a: ldloc.1
+IL_012b: callvirt !!0 UnityEngine.Component::GetComponent<IRemoved>()
+IL_0130: stloc.3
+IL_0131: ldloc.3
+IL_0132: brfalse.s IL_013a
+IL_0134: ldloc.3
+IL_0135: callvirt System.Void IRemoved::OnRemoved()
+IL_013a: ldloc.1
+IL_013b: callvirt !!0 UnityEngine.Component::GetComponent<WearNTear>()
+IL_0140: stloc.s V_4
+IL_0142: ldloc.s V_4
+IL_0144: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0149: brfalse.s IL_0158
+IL_014b: ldloc.s V_4
+IL_014d: ldc.i4.0
+IL_014e: callvirt System.Void WearNTear::Remove(System.Boolean)
+IL_0153: br IL_020e
+IL_0158: ldloc.1
+IL_0159: callvirt !!0 UnityEngine.Component::GetComponent<Character>()
+IL_015e: stloc.s V_6
+IL_0160: ldloc.s V_6
+IL_0162: brfalse.s IL_017a
+IL_0164: ldloc.s V_6
+IL_0166: ldc.r4 1E+10
+IL_016b: newobj System.Void HitData::.ctor(System.Single)
+IL_0170: callvirt System.Void Character::Damage(HitData)
+IL_0175: br IL_020e
+IL_017a: ldstr "Removing non WNT object with hammer "
+IL_017f: ldloc.1
+IL_0180: callvirt System.String UnityEngine.Object::get_name()
+IL_0185: call System.String System.String::Concat(System.String,System.String)
+IL_018a: call System.Void ZLog::Log(System.Object)
+IL_018f: ldloc.2
+IL_0190: callvirt System.Void ZNetView::ClaimOwnership()
+IL_0195: ldloc.1
+IL_0196: ldnull
+IL_0197: callvirt System.Void Piece::DropResources(HitData)
+IL_019c: ldloc.1
+IL_019d: ldfld EffectList Piece::m_placeEffect
+IL_01a2: ldloc.1
+IL_01a3: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_01a8: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_01ad: ldloc.1
+IL_01ae: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_01b3: callvirt UnityEngine.Quaternion UnityEngine.Transform::get_rotation()
+IL_01b8: ldloc.1
+IL_01b9: callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+IL_01be: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_01c3: ldc.r4 1
+IL_01c8: ldc.i4.m1
+IL_01c9: ldarg.0
+IL_01ca: call ZDOID Character::GetZDOID()
+IL_01cf: callvirt UnityEngine.GameObject[] EffectList::Create(UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform,System.Single,System.Int32,ZDOID)
+IL_01d4: pop
+IL_01d5: ldarg.0
+IL_01d6: ldfld EffectList Player::m_removeEffects
+IL_01db: ldloc.1
+IL_01dc: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_01e1: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_01e6: call UnityEngine.Quaternion UnityEngine.Quaternion::get_identity()
+IL_01eb: ldnull
+IL_01ec: ldc.r4 1
+IL_01f1: ldc.i4.m1
+IL_01f2: ldarg.0
+IL_01f3: call ZDOID Character::GetZDOID()
+IL_01f8: callvirt UnityEngine.GameObject[] EffectList::Create(UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform,System.Single,System.Int32,ZDOID)
+IL_01fd: pop
+IL_01fe: call ZNetScene ZNetScene::get_instance()
+IL_0203: ldloc.1
+IL_0204: callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+IL_0209: callvirt System.Void ZNetScene::Destroy(UnityEngine.GameObject)
+IL_020e: ldarg.0
+IL_020f: call ItemDrop/ItemData Humanoid::GetRightItem()
+IL_0214: stloc.s V_5
+IL_0216: ldloc.s V_5
+IL_0218: brfalse.s IL_023c
+IL_021a: ldarg.0
+IL_021b: call System.Void Player::FaceLookDirection()
+IL_0220: ldarg.0
+IL_0221: ldfld ZSyncAnimation Character::m_zanim
+IL_0226: ldloc.s V_5
+IL_0228: ldfld ItemDrop/ItemData/SharedData ItemDrop/ItemData::m_shared
+IL_022d: ldfld Attack ItemDrop/ItemData/SharedData::m_attack
+IL_0232: ldfld System.String Attack::m_attackAnimation
+IL_0237: callvirt System.Void ZSyncAnimation::SetTrigger(System.String)
+IL_023c: ldc.i4.1
+IL_023d: ret
+IL_023e: ldc.i4.0
+IL_023f: ret
+System.Void Player::PlacePiece(Piece,UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean,System.Boolean)
+IL_0000: ldarg.1
+IL_0001: callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+IL_0006: ldc.i4.1
+IL_0007: call System.Void TerrainModifier::SetTriggerOnPlaced(System.Boolean)
+IL_000c: ldarg.2
+IL_000d: ldarg.3
+IL_000e: call !!0 UnityEngine.Object::Instantiate<UnityEngine.GameObject>(!!0,UnityEngine.Vector3,UnityEngine.Quaternion)
+IL_0013: stloc.0
+IL_0014: ldc.i4.0
+IL_0015: call System.Void TerrainModifier::SetTriggerOnPlaced(System.Boolean)
+IL_001a: ldloc.0
+IL_001b: callvirt !!0 UnityEngine.GameObject::GetComponentInChildren<CraftingStation>()
+IL_0020: stloc.1
+IL_0021: ldloc.1
+IL_0022: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0027: brfalse.s IL_0030
+IL_0029: ldarg.0
+IL_002a: ldloc.1
+IL_002b: call System.Void Player::AddKnownStation(CraftingStation)
+IL_0030: ldloc.0
+IL_0031: callvirt !!0 UnityEngine.GameObject::GetComponent<Piece>()
+IL_0036: stloc.2
+IL_0037: ldloc.2
+IL_0038: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_003d: brfalse.s IL_005a
+IL_003f: ldloc.2
+IL_0040: ldarg.0
+IL_0041: call System.Int64 Player::GetPlayerID()
+IL_0046: call Splatform.IDistributionPlatform Splatform.PlatformManager::get_DistributionPlatform()
+IL_004b: callvirt Splatform.ILocalUser Splatform.IDistributionPlatform::get_LocalUser()
+IL_0050: callvirt Splatform.PlatformUserID Splatform.IUser::get_PlatformUserID()
+IL_0055: callvirt System.Void Piece::SetCreator(System.Int64,Splatform.PlatformUserID)
+IL_005a: ldloc.0
+IL_005b: callvirt !!0 UnityEngine.GameObject::GetComponent<PrivateArea>()
+IL_0060: stloc.3
+IL_0061: ldloc.3
+IL_0062: brfalse.s IL_0079
+IL_0064: ldloc.3
+IL_0065: call Game Game::get_instance()
+IL_006a: callvirt PlayerProfile Game::GetPlayerProfile()
+IL_006f: callvirt System.String PlayerProfile::GetName()
+IL_0074: callvirt System.Void PrivateArea::Setup(System.String)
+IL_0079: ldloc.0
+IL_007a: callvirt !!0 UnityEngine.GameObject::GetComponent<WearNTear>()
+IL_007f: stloc.s V_4
+IL_0081: ldloc.s V_4
+IL_0083: brfalse.s IL_008c
+IL_0085: ldloc.s V_4
+IL_0087: callvirt System.Void WearNTear::OnPlaced()
+IL_008c: ldarg.s doAttack
+IL_008e: brfalse.s IL_00be
+IL_0090: ldarg.0
+IL_0091: call ItemDrop/ItemData Humanoid::GetRightItem()
+IL_0096: stloc.s V_5
+IL_0098: ldloc.s V_5
+IL_009a: brfalse.s IL_00be
+IL_009c: ldarg.0
+IL_009d: call System.Void Player::FaceLookDirection()
+IL_00a2: ldarg.0
+IL_00a3: ldfld ZSyncAnimation Character::m_zanim
+IL_00a8: ldloc.s V_5
+IL_00aa: ldfld ItemDrop/ItemData/SharedData ItemDrop/ItemData::m_shared
+IL_00af: ldfld Attack ItemDrop/ItemData/SharedData::m_attack
+IL_00b4: ldfld System.String Attack::m_attackAnimation
+IL_00b9: callvirt System.Void ZSyncAnimation::SetTrigger(System.String)
+IL_00be: ldarg.1
+IL_00bf: ldfld System.Boolean Piece::m_randomInitBuildRotation
+IL_00c4: brfalse.s IL_00d4
+IL_00c6: ldarg.0
+IL_00c7: ldc.i4.0
+IL_00c8: ldc.i4.s 16
+IL_00ca: call System.Int32 UnityEngine.Random::Range(System.Int32,System.Int32)
+IL_00cf: stfld System.Int32 Player::m_placeRotation
+IL_00d4: ldloc.0
+IL_00d5: callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+IL_00da: callvirt !!0 UnityEngine.GameObject::GetComponent<ItemDrop>()
+IL_00df: stloc.s V_6
+IL_00e1: ldloc.s V_6
+IL_00e3: brfalse.s IL_00ed
+IL_00e5: ldloc.s V_6
+IL_00e7: ldc.i4.1
+IL_00e8: callvirt System.Void ItemDrop::MakePiece(System.Boolean)
+IL_00ed: ldsfld System.Collections.Generic.List`1<IPlaced> Player::m_placed
+IL_00f2: callvirt System.Void System.Collections.Generic.List`1<IPlaced>::Clear()
+IL_00f7: ldloc.0
+IL_00f8: ldsfld System.Collections.Generic.List`1<IPlaced> Player::m_placed
+IL_00fd: callvirt System.Void UnityEngine.GameObject::GetComponents<IPlaced>(System.Collections.Generic.List`1<!!0>)
+IL_0102: ldsfld System.Collections.Generic.List`1<IPlaced> Player::m_placed
+IL_0107: callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<IPlaced>::GetEnumerator()
+IL_010c: stloc.s V_8
+IL_010e: br.s IL_011c
+IL_0110: ldloca.s V_8
+IL_0112: call !0 System.Collections.Generic.List`1/Enumerator<IPlaced>::get_Current()
+IL_0117: callvirt System.Void IPlaced::OnPlaced()
+IL_011c: ldloca.s V_8
+IL_011e: call System.Boolean System.Collections.Generic.List`1/Enumerator<IPlaced>::MoveNext()
+IL_0123: brtrue.s IL_0110
+IL_0125: leave.s IL_0135
+IL_0127: ldloca.s V_8
+IL_0129: constrained. System.Collections.Generic.List`1/Enumerator<IPlaced>
+IL_012f: callvirt System.Void System.IDisposable::Dispose()
+IL_0134: endfinally
+IL_0135: ldarg.1
+IL_0136: ldfld EffectList Piece::m_placeEffect
+IL_013b: ldarg.2
+IL_013c: ldarg.3
+IL_013d: ldloc.0
+IL_013e: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0143: ldc.r4 1
+IL_0148: ldc.i4.m1
+IL_0149: ldarg.0
+IL_014a: call ZDOID Character::GetZDOID()
+IL_014f: callvirt UnityEngine.GameObject[] EffectList::Create(UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform,System.Single,System.Int32,ZDOID)
+IL_0154: pop
+IL_0155: ldarg.2
+IL_0156: call UnityEngine.Vector3 UnityEngine.Vector3::get_down()
+IL_015b: ldloca.s V_7
+IL_015d: ldc.r4 200
+IL_0162: ldarg.0
+IL_0163: ldfld System.Int32 Player::m_terrainMask
+IL_0168: call System.Boolean UnityEngine.Physics::Raycast(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.RaycastHit&,System.Single,System.Int32)
+IL_016d: brfalse.s IL_01db
+IL_016f: ldloc.0
+IL_0170: callvirt System.String UnityEngine.Object::get_name()
+IL_0175: ldstr " placed at height "
+IL_017a: ldloca.s V_7
+IL_017c: call System.Single UnityEngine.RaycastHit::get_distance()
+IL_0181: stloc.s V_10
+IL_0183: ldloca.s V_10
+IL_0185: call System.String System.Single::ToString()
+IL_018a: call System.String System.String::Concat(System.String,System.String,System.String)
+IL_018f: call System.Void ZLog::Log(System.Object)
+IL_0194: call Game Game::get_instance()
+IL_0199: callvirt PlayerProfile Game::GetPlayerProfile()
+IL_019e: ldc.i4 130
+IL_01a3: callvirt System.Single PlayerProfile::GetStat(PlayerStatType)
+IL_01a8: stloc.s V_9
+IL_01aa: ldloca.s V_7
+IL_01ac: call System.Single UnityEngine.RaycastHit::get_distance()
+IL_01b1: ldloc.s V_9
+IL_01b3: ble.un.s IL_01db
+IL_01b5: ldarg.0
+IL_01b6: ldarg.2
+IL_01b7: call System.Boolean Player::IsBuiltOnMyFoundation(UnityEngine.Vector3)
+IL_01bc: brfalse.s IL_01db
+IL_01be: call Game Game::get_instance()
+IL_01c3: callvirt PlayerProfile Game::GetPlayerProfile()
+IL_01c8: ldc.i4 130
+IL_01cd: ldloca.s V_7
+IL_01cf: call System.Single UnityEngine.RaycastHit::get_distance()
+IL_01d4: ldarg.s cheated
+IL_01d6: callvirt System.Void PlayerProfile::SetStat(PlayerStatType,System.Single,System.Boolean)
+IL_01db: ldloc.0
+IL_01dc: callvirt System.String UnityEngine.Object::get_name()
+IL_01e1: ldstr " placed at world height "
+IL_01e6: ldarga.s pos
+IL_01e8: ldflda System.Single UnityEngine.Vector3::y
+IL_01ed: call System.String System.Single::ToString()
+IL_01f2: call System.String System.String::Concat(System.String,System.String,System.String)
+IL_01f7: call System.Void ZLog::Log(System.Object)
+IL_01fc: ldarg.2
+IL_01fd: call System.Boolean Character::InInterior(UnityEngine.Vector3)
+IL_0202: brtrue.s IL_0249
+IL_0204: call Game Game::get_instance()
+IL_0209: callvirt PlayerProfile Game::GetPlayerProfile()
+IL_020e: ldc.i4 131
+IL_0213: callvirt System.Single PlayerProfile::GetStat(PlayerStatType)
+IL_0218: stloc.s V_11
+IL_021a: ldarg.2
+IL_021b: ldfld System.Single UnityEngine.Vector3::y
+IL_0220: ldloc.s V_11
+IL_0222: ble.un.s IL_0249
+IL_0224: ldarg.0
+IL_0225: ldarg.2
+IL_0226: call System.Boolean Player::IsBuiltOnMyFoundation(UnityEngine.Vector3)
+IL_022b: brfalse.s IL_0249
+IL_022d: call Game Game::get_instance()
+IL_0232: callvirt PlayerProfile Game::GetPlayerProfile()
+IL_0237: ldc.i4 131
+IL_023c: ldarg.2
+IL_023d: ldfld System.Single UnityEngine.Vector3::y
+IL_0242: ldarg.s cheated
+IL_0244: callvirt System.Void PlayerProfile::SetStat(PlayerStatType,System.Single,System.Boolean)
+IL_0249: ldarg.s cheated
+IL_024b: brfalse.s IL_0266
+IL_024d: ldloc.0
+IL_024e: callvirt !!0 UnityEngine.GameObject::GetComponent<ZNetView>()
+IL_0253: stloc.s V_12
+IL_0255: ldloc.s V_12
+IL_0257: brfalse.s IL_0266
+IL_0259: ldloc.s V_12
+IL_025b: callvirt ZDO ZNetView::GetZDO()
+IL_0260: ldc.i4.1
+IL_0261: call System.Void CheatUtils::SetCheated(ZDO,System.Boolean)
+IL_0266: ldarg.0
+IL_0267: ldc.r4 50
+IL_026c: call System.Void Character::AddNoise(System.Single)
+IL_0271: ldarg.0
+IL_0272: ldarg.0
+IL_0273: ldfld System.Int32 Player::m_clusterStatCheck
+IL_0278: stloc.s V_13
+IL_027a: ldloc.s V_13
+IL_027c: ldc.i4.1
+IL_027d: sub
+IL_027e: stfld System.Int32 Player::m_clusterStatCheck
+IL_0283: ldloc.s V_13
+IL_0285: ldc.i4.0
+IL_0286: bgt.s IL_0295
+IL_0288: call System.Void Piece::CheckClusteredBuildPieceStats()
+IL_028d: ldarg.0
+IL_028e: ldc.i4.s 20
+IL_0290: stfld System.Int32 Player::m_clusterStatCheck
+IL_0295: ret
+System.Void Player::Repair(ItemDrop/ItemData,Piece)
+IL_0000: ldarg.0
+IL_0001: callvirt System.Boolean Character::InPlaceMode()
+IL_0006: brtrue.s IL_0009
+IL_0008: ret
+IL_0009: ldarg.0
+IL_000a: call Piece Player::GetHoveringPiece()
+IL_000f: stloc.0
+IL_0010: ldloc.0
+IL_0011: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0016: brfalse IL_0140
+IL_001b: ldarg.0
+IL_001c: ldloc.0
+IL_001d: call System.Boolean Player::CheckCanRemovePiece(Piece)
+IL_0022: brtrue.s IL_0025
+IL_0024: ret
+IL_0025: ldloc.0
+IL_0026: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_002b: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_0030: ldc.r4 0
+IL_0035: ldc.i4.1
+IL_0036: ldc.i4.0
+IL_0037: call System.Boolean PrivateArea::CheckAccess(UnityEngine.Vector3,System.Single,System.Boolean,System.Boolean)
+IL_003c: brtrue.s IL_003f
+IL_003e: ret
+IL_003f: ldc.i4.0
+IL_0040: stloc.1
+IL_0041: ldloc.0
+IL_0042: callvirt !!0 UnityEngine.Component::GetComponent<WearNTear>()
+IL_0047: stloc.2
+IL_0048: ldloc.2
+IL_0049: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_004e: brfalse.s IL_005a
+IL_0050: ldloc.2
+IL_0051: callvirt System.Boolean WearNTear::Repair()
+IL_0056: brfalse.s IL_005a
+IL_0058: ldc.i4.1
+IL_0059: stloc.1
+IL_005a: ldloc.1
+IL_005b: brfalse IL_0126
+IL_0060: ldarg.0
+IL_0061: call System.Void Player::FaceLookDirection()
+IL_0066: ldarg.0
+IL_0067: ldfld ZSyncAnimation Character::m_zanim
+IL_006c: ldarg.1
+IL_006d: ldfld ItemDrop/ItemData/SharedData ItemDrop/ItemData::m_shared
+IL_0072: ldfld Attack ItemDrop/ItemData/SharedData::m_attack
+IL_0077: ldfld System.String Attack::m_attackAnimation
+IL_007c: callvirt System.Void ZSyncAnimation::SetTrigger(System.String)
+IL_0081: ldloc.0
+IL_0082: ldfld EffectList Piece::m_placeEffect
+IL_0087: ldloc.0
+IL_0088: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_008d: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_0092: ldloc.0
+IL_0093: callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_0098: callvirt UnityEngine.Quaternion UnityEngine.Transform::get_rotation()
+IL_009d: ldnull
+IL_009e: ldc.r4 1
+IL_00a3: ldc.i4.m1
+IL_00a4: ldarg.0
+IL_00a5: call ZDOID Character::GetZDOID()
+IL_00aa: callvirt UnityEngine.GameObject[] EffectList::Create(UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform,System.Single,System.Int32,ZDOID)
+IL_00af: pop
+IL_00b0: ldarg.0
+IL_00b1: ldc.i4.1
+IL_00b2: call Localization Localization::get_instance()
+IL_00b7: ldstr "$msg_repaired"
+IL_00bc: ldc.i4.1
+IL_00bd: newarr System.String
+IL_00c2: dup
+IL_00c3: ldc.i4.0
+IL_00c4: ldloc.0
+IL_00c5: ldfld System.String Piece::m_name
+IL_00ca: stelem.ref
+IL_00cb: callvirt System.String Localization::Localize(System.String,System.String[])
+IL_00d0: ldc.i4.0
+IL_00d1: ldnull
+IL_00d2: ldc.i4.0
+IL_00d3: callvirt System.Void Character::Message(MessageHud/MessageType,System.String,System.Int32,UnityEngine.Sprite,System.Boolean)
+IL_00d8: ldarg.0
+IL_00d9: ldarg.0
+IL_00da: call System.Single Player::GetBuildStamina()
+IL_00df: callvirt System.Void Character::UseStamina(System.Single)
+IL_00e4: ldarg.0
+IL_00e5: ldarg.1
+IL_00e6: ldfld ItemDrop/ItemData/SharedData ItemDrop/ItemData::m_shared
+IL_00eb: ldfld Attack ItemDrop/ItemData/SharedData::m_attack
+IL_00f0: ldfld System.Single Attack::m_attackEitr
+IL_00f5: callvirt System.Void Character::UseEitr(System.Single)
+IL_00fa: ldarg.1
+IL_00fb: ldfld ItemDrop/ItemData/SharedData ItemDrop/ItemData::m_shared
+IL_0100: ldfld System.Boolean ItemDrop/ItemData/SharedData::m_useDurability
+IL_0105: brfalse.s IL_0140
+IL_0107: ldarg.1
+IL_0108: dup
+IL_0109: ldfld System.Single ItemDrop/ItemData::m_durability
+IL_010e: ldarg.1
+IL_010f: ldfld ItemDrop/ItemData/SharedData ItemDrop/ItemData::m_shared
+IL_0114: ldfld System.Single ItemDrop/ItemData/SharedData::m_useDurabilityDrain
+IL_0119: ldsfld System.Single Game::m_durabilityRate
+IL_011e: mul
+IL_011f: sub
+IL_0120: stfld System.Single ItemDrop/ItemData::m_durability
+IL_0125: ret
+IL_0126: ldarg.0
+IL_0127: ldc.i4.1
+IL_0128: ldloc.0
+IL_0129: ldfld System.String Piece::m_name
+IL_012e: ldstr " $msg_doesnotneedrepair"
+IL_0133: call System.String System.String::Concat(System.String,System.String)
+IL_0138: ldc.i4.0
+IL_0139: ldnull
+IL_013a: ldc.i4.0
+IL_013b: callvirt System.Void Character::Message(MessageHud/MessageType,System.String,System.Int32,UnityEngine.Sprite,System.Boolean)
+IL_0140: ret
+System.Void ZDO::Set(System.String,ZDOID)
+IL_0000: ldarg.0
+IL_0001: ldarg.1
+IL_0002: call System.Collections.Generic.KeyValuePair`2<System.Int32,System.Int32> ZDO::GetHashZDOID(System.String)
+IL_0007: ldarg.2
+IL_0008: call System.Void ZDO::Set(System.Collections.Generic.KeyValuePair`2<System.Int32,System.Int32>,ZDOID)
+IL_000d: ret
+System.Void ZDO::Set(System.Collections.Generic.KeyValuePair`2<System.Int32,System.Int32>,ZDOID)
+IL_0000: ldarg.0
+IL_0001: ldarga.s hashPair
+IL_0003: call !0 System.Collections.Generic.KeyValuePair`2<System.Int32,System.Int32>::get_Key()
+IL_0008: ldarga.s id
+IL_000a: call System.Int64 ZDOID::get_UserID()
+IL_000f: call System.Void ZDO::Set(System.Int32,System.Int64)
+IL_0014: ldarg.0
+IL_0015: ldarga.s hashPair
+IL_0017: call !1 System.Collections.Generic.KeyValuePair`2<System.Int32,System.Int32>::get_Value()
+IL_001c: ldarga.s id
+IL_001e: call System.UInt32 ZDOID::get_ID()
+IL_0023: conv.u8
+IL_0024: call System.Void ZDO::Set(System.Int32,System.Int64)
+IL_0029: ret
+System.Void Piece::GetSnapPoints(System.Collections.Generic.List`1<UnityEngine.Transform>)
+IL_0000: ldc.i4.0
+IL_0001: stloc.0
+IL_0002: br.s IL_0029
+IL_0004: ldarg.0
+IL_0005: call UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_000a: ldloc.0
+IL_000b: callvirt UnityEngine.Transform UnityEngine.Transform::GetChild(System.Int32)
+IL_0010: stloc.1
+IL_0011: ldloc.1
+IL_0012: ldstr "snappoint"
+IL_0017: callvirt System.Boolean UnityEngine.Component::CompareTag(System.String)
+IL_001c: brfalse.s IL_0025
+IL_001e: ldarg.1
+IL_001f: ldloc.1
+IL_0020: callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Transform>::Add(!0)
+IL_0025: ldloc.0
+IL_0026: ldc.i4.1
+IL_0027: add
+IL_0028: stloc.0
+IL_0029: ldloc.0
+IL_002a: ldarg.0
+IL_002b: call UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_0030: callvirt System.Int32 UnityEngine.Transform::get_childCount()
+IL_0035: blt.s IL_0004
+IL_0037: ret
+ItemDrop Piece/Requirement::m_resItem
+System.Int32 Piece/Requirement::m_amount
+System.Int32 Piece/Requirement::m_extraAmountOnlyOneIngredient
+System.Int32 Piece/Requirement::m_amountPerLevel
+System.Boolean Piece/Requirement::m_upgraderResource
+System.Boolean Piece/Requirement::m_recover
+System.Int32 Piece/Requirement::GetAmount(System.Int32)
+System.Void Piece/Requirement::.ctor()
+System.Void WearNTear::RPC_Remove(System.Int64,System.Boolean)
+IL_0000: ldarg.0
+IL_0001: ldfld ZNetView WearNTear::m_nview
+IL_0006: callvirt System.Boolean ZNetView::IsValid()
+IL_000b: brfalse.s IL_001a
+IL_000d: ldarg.0
+IL_000e: ldfld ZNetView WearNTear::m_nview
+IL_0013: callvirt System.Boolean ZNetView::IsOwner()
+IL_0018: brtrue.s IL_001b
+IL_001a: ret
+IL_001b: ldarg.0
+IL_001c: ldnull
+IL_001d: ldarg.2
+IL_001e: call System.Void WearNTear::Destroy(HitData,System.Boolean)
+IL_0023: ret
+System.Void WearNTear::Destroy(HitData,System.Boolean)
+IL_0000: ldarg.0
+IL_0001: call !!0 UnityEngine.Component::GetComponent<Bed>()
+IL_0006: stloc.0
+IL_0007: ldloc.0
+IL_0008: ldnull
+IL_0009: call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+IL_000e: brfalse.s IL_003a
+IL_0010: ldarg.0
+IL_0011: ldfld ZNetView WearNTear::m_nview
+IL_0016: callvirt System.Boolean ZNetView::IsOwner()
+IL_001b: brfalse.s IL_003a
+IL_001d: call Game Game::get_instance()
+IL_0022: ldnull
+IL_0023: call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+IL_0028: brfalse.s IL_003a
+IL_002a: call Game Game::get_instance()
+IL_002f: ldloc.0
+IL_0030: callvirt UnityEngine.Vector3 Bed::GetSpawnPoint()
+IL_0035: callvirt System.Void Game::RemoveCustomSpawnPoint(UnityEngine.Vector3)
+IL_003a: ldarg.0
+IL_003b: ldfld ZNetView WearNTear::m_nview
+IL_0040: callvirt ZDO ZNetView::GetZDO()
+IL_0045: ldsfld System.Int32 ZDOVars::s_health
+IL_004a: ldc.r4 0
+IL_004f: callvirt System.Void ZDO::Set(System.Int32,System.Single)
+IL_0054: ldarg.0
+IL_0055: ldfld ZNetView WearNTear::m_nview
+IL_005a: callvirt ZDO ZNetView::GetZDO()
+IL_005f: ldsfld System.Int32 ZDOVars::s_support
+IL_0064: ldc.r4 0
+IL_0069: callvirt System.Void ZDO::Set(System.Int32,System.Single)
+IL_006e: ldarg.0
+IL_006f: ldc.r4 0
+IL_0074: stfld System.Single WearNTear::m_support
+IL_0079: ldarg.0
+IL_007a: ldc.r4 0
+IL_007f: stfld System.Single WearNTear::m_health
+IL_0084: ldarg.0
+IL_0085: call System.Void WearNTear::ClearCachedSupport()
+IL_008a: ldarg.0
+IL_008b: ldfld Piece WearNTear::m_piece
+IL_0090: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0095: brfalse.s IL_00a6
+IL_0097: ldarg.2
+IL_0098: brtrue.s IL_00a6
+IL_009a: ldarg.0
+IL_009b: ldfld Piece WearNTear::m_piece
+IL_00a0: ldarg.1
+IL_00a1: callvirt System.Void Piece::DropResources(HitData)
+IL_00a6: ldarg.0
+IL_00a7: ldfld System.Action WearNTear::m_onDestroyed
+IL_00ac: brfalse.s IL_00b9
+IL_00ae: ldarg.0
+IL_00af: ldfld System.Action WearNTear::m_onDestroyed
+IL_00b4: callvirt System.Void System.Action::Invoke()
+IL_00b9: ldarg.0
+IL_00ba: ldfld System.Single WearNTear::m_destroyNoise
+IL_00bf: ldc.r4 0
+IL_00c4: ble.un.s IL_00fd
+IL_00c6: ldarg.1
+IL_00c7: brfalse.s IL_00d3
+IL_00c9: ldarg.1
+IL_00ca: ldfld HitData/HitType HitData::m_hitType
+IL_00cf: ldc.i4.s 20
+IL_00d1: beq.s IL_00fd
+IL_00d3: ldarg.0
+IL_00d4: call UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_00d9: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_00de: ldc.r4 10
+IL_00e3: call Player Player::GetClosestPlayer(UnityEngine.Vector3,System.Single)
+IL_00e8: stloc.2
+IL_00e9: ldloc.2
+IL_00ea: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_00ef: brfalse.s IL_00fd
+IL_00f1: ldloc.2
+IL_00f2: ldarg.0
+IL_00f3: ldfld System.Single WearNTear::m_destroyNoise
+IL_00f8: callvirt System.Void Character::AddNoise(System.Single)
+IL_00fd: ldsfld ZDOID ZDOID::None
+IL_0102: stloc.1
+IL_0103: ldarg.1
+IL_0104: brfalse.s IL_0120
+IL_0106: ldarg.1
+IL_0107: callvirt Character HitData::GetAttacker()
+IL_010c: ldnull
+IL_010d: call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+IL_0112: brfalse.s IL_0120
+IL_0114: ldarg.1
+IL_0115: callvirt Character HitData::GetAttacker()
+IL_011a: callvirt ZDOID Character::GetZDOID()
+IL_011f: stloc.1
+IL_0120: ldarg.0
+IL_0121: ldfld EffectList WearNTear::m_destroyedEffect
+IL_0126: ldarg.0
+IL_0127: call UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_012c: callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+IL_0131: ldarg.0
+IL_0132: call UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_0137: callvirt UnityEngine.Quaternion UnityEngine.Transform::get_rotation()
+IL_013c: ldarg.0
+IL_013d: call UnityEngine.Transform UnityEngine.Component::get_transform()
+IL_0142: ldc.r4 1
+IL_0147: ldc.i4.m1
+IL_0148: ldloc.1
+IL_0149: callvirt UnityEngine.GameObject[] EffectList::Create(UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform,System.Single,System.Int32,ZDOID)
+IL_014e: pop
+IL_014f: ldarg.0
+IL_0150: ldfld System.Boolean WearNTear::m_autoCreateFragments
+IL_0155: brfalse.s IL_0171
+IL_0157: ldarg.0
+IL_0158: ldfld ZNetView WearNTear::m_nview
+IL_015d: ldsfld System.Int64 ZNetView::Everybody
+IL_0162: ldstr "RPC_CreateFragments"
+IL_0167: call !!0[] System.Array::Empty<System.Object>()
+IL_016c: callvirt System.Void ZNetView::InvokeRPC(System.Int64,System.String,System.Object[])
+IL_0171: call ZNetScene ZNetScene::get_instance()
+IL_0176: ldarg.0
+IL_0177: call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+IL_017c: callvirt System.Void ZNetScene::Destroy(UnityEngine.GameObject)
+IL_0181: ret
+UnityEngine.GameObject Jotunn.Managers.PrefabManager::CreateEmptyPrefab(System.String,System.Boolean)
+IL_0000: ldarg.1
+IL_0001: call System.Boolean System.String::IsNullOrEmpty(System.String)
+IL_0006: brfalse.s IL_001a
+IL_0008: ldstr "Failed to create prefab with invalid name: "
+IL_000d: ldarg.1
+IL_000e: call System.String System.String::Concat(System.String,System.String)
+IL_0013: call System.Void Jotunn.Logger::LogWarning(System.Object)
+IL_0018: ldnull
+IL_0019: ret
+IL_001a: ldarg.0
+IL_001b: ldarg.1
+IL_001c: call UnityEngine.GameObject Jotunn.Managers.PrefabManager::GetPrefab(System.String)
+IL_0021: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0026: brfalse.s IL_003a
+IL_0028: ldstr "Failed to create prefab, name already exists: "
+IL_002d: ldarg.1
+IL_002e: call System.String System.String::Concat(System.String,System.String)
+IL_0033: call System.Void Jotunn.Logger::LogWarning(System.Object)
+IL_0038: ldnull
+IL_0039: ret
+IL_003a: ldc.i4.3
+IL_003b: call UnityEngine.GameObject UnityEngine.GameObject::CreatePrimitive(UnityEngine.PrimitiveType)
+IL_0040: stloc.0
+IL_0041: ldloc.0
+IL_0042: ldarg.1
+IL_0043: callvirt System.Void UnityEngine.Object::set_name(System.String)
+IL_0048: ldloc.0
+IL_0049: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_004e: ldarg.0
+IL_004f: call UnityEngine.GameObject Jotunn.Managers.PrefabManager::get_PrefabContainer()
+IL_0054: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0059: callvirt System.Void UnityEngine.Transform::set_parent(UnityEngine.Transform)
+IL_005e: ldarg.2
+IL_005f: brfalse.s IL_006f
+IL_0061: ldloc.0
+IL_0062: callvirt !!0 UnityEngine.GameObject::AddComponent<ZNetView>()
+IL_0067: stloc.1
+IL_0068: ldloc.1
+IL_0069: ldc.i4.1
+IL_006a: stfld System.Boolean ZNetView::m_persistent
+IL_006f: ldloc.0
+IL_0070: ret
+System.Boolean Jotunn.Managers.RenderManager::EnqueueRender(UnityEngine.GameObject,System.Action`1<UnityEngine.Sprite>)
+IL_0000: ldarg.0
+IL_0001: ldarg.1
+IL_0002: newobj System.Void Jotunn.Managers.RenderManager/RenderRequest::.ctor(UnityEngine.GameObject)
+IL_0007: ldarg.2
+IL_0008: call System.Boolean Jotunn.Managers.RenderManager::EnqueueRender(Jotunn.Managers.RenderManager/RenderRequest,System.Action`1<UnityEngine.Sprite>)
+IL_000d: ret
+System.Boolean Jotunn.Managers.RenderManager::EnqueueRender(Jotunn.Managers.RenderManager/RenderRequest,System.Action`1<UnityEngine.Sprite>)
+IL_0000: ldarg.1
+IL_0001: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_0006: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_000b: brtrue.s IL_0018
+IL_000d: ldstr "Target is required"
+IL_0012: newobj System.Void System.ArgumentException::.ctor(System.String)
+IL_0017: throw
+IL_0018: ldarg.2
+IL_0019: brtrue.s IL_0026
+IL_001b: ldstr "Callback is required"
+IL_0020: newobj System.Void System.ArgumentException::.ctor(System.String)
+IL_0025: throw
+IL_0026: ldarg.1
+IL_0027: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_002c: ldc.i4.0
+IL_002d: callvirt !!0[] UnityEngine.GameObject::GetComponentsInChildren<UnityEngine.Component>(System.Boolean)
+IL_0032: ldnull
+IL_0033: ldftn System.Boolean Jotunn.Managers.RenderManager::IsVisualComponent(UnityEngine.Component)
+IL_0039: newobj System.Void System.Func`2<UnityEngine.Component,System.Boolean>::.ctor(System.Object,System.IntPtr)
+IL_003e: call System.Boolean System.Linq.Enumerable::Any<UnityEngine.Component>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+IL_0043: brtrue.s IL_004e
+IL_0045: ldarg.2
+IL_0046: ldnull
+IL_0047: callvirt System.Void System.Action`1<UnityEngine.Sprite>::Invoke(!0)
+IL_004c: ldc.i4.0
+IL_004d: ret
+IL_004e: ldarg.1
+IL_004f: ldarg.2
+IL_0050: callvirt System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Callback(System.Action`1<UnityEngine.Sprite>)
+IL_0055: ldarg.2
+IL_0056: brfalse.s IL_0065
+IL_0058: ldarg.2
+IL_0059: ldarg.0
+IL_005a: ldarg.1
+IL_005b: call UnityEngine.Sprite Jotunn.Managers.RenderManager::Render(Jotunn.Managers.RenderManager/RenderRequest)
+IL_0060: callvirt System.Void System.Action`1<UnityEngine.Sprite>::Invoke(!0)
+IL_0065: ldc.i4.1
+IL_0066: ret
+System.Boolean Jotunn.Managers.RenderManager::EnqueueRender(UnityEngine.GameObject,System.Action`1<UnityEngine.Sprite>,System.Int32,System.Int32)
+IL_0000: ldarg.0
+IL_0001: ldarg.1
+IL_0002: newobj System.Void Jotunn.Managers.RenderManager/RenderRequest::.ctor(UnityEngine.GameObject)
+IL_0007: dup
+IL_0008: ldarg.3
+IL_0009: callvirt System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Width(System.Int32)
+IL_000e: dup
+IL_000f: ldarg.s height
+IL_0011: callvirt System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Height(System.Int32)
+IL_0016: ldarg.2
+IL_0017: call System.Boolean Jotunn.Managers.RenderManager::EnqueueRender(Jotunn.Managers.RenderManager/RenderRequest,System.Action`1<UnityEngine.Sprite>)
+IL_001c: ret
+UnityEngine.Sprite Jotunn.Managers.RenderManager::Render(UnityEngine.GameObject)
+IL_0000: ldarg.0
+IL_0001: ldarg.1
+IL_0002: newobj System.Void Jotunn.Managers.RenderManager/RenderRequest::.ctor(UnityEngine.GameObject)
+IL_0007: call UnityEngine.Sprite Jotunn.Managers.RenderManager::Render(Jotunn.Managers.RenderManager/RenderRequest)
+IL_000c: ret
+UnityEngine.Sprite Jotunn.Managers.RenderManager::Render(UnityEngine.GameObject,UnityEngine.Quaternion)
+IL_0000: ldarg.0
+IL_0001: ldarg.1
+IL_0002: newobj System.Void Jotunn.Managers.RenderManager/RenderRequest::.ctor(UnityEngine.GameObject)
+IL_0007: dup
+IL_0008: ldarg.2
+IL_0009: callvirt System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Rotation(UnityEngine.Quaternion)
+IL_000e: call UnityEngine.Sprite Jotunn.Managers.RenderManager::Render(Jotunn.Managers.RenderManager/RenderRequest)
+IL_0013: ret
+UnityEngine.Sprite Jotunn.Managers.RenderManager::Render(Jotunn.Managers.RenderManager/RenderRequest)
+IL_0000: ldarg.1
+IL_0001: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_0006: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_000b: brtrue.s IL_0018
+IL_000d: ldstr "Target is required"
+IL_0012: newobj System.Void System.ArgumentException::.ctor(System.String)
+IL_0017: throw
+IL_0018: ldarg.1
+IL_0019: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_001e: ldc.i4.0
+IL_001f: callvirt !!0[] UnityEngine.GameObject::GetComponentsInChildren<UnityEngine.Component>(System.Boolean)
+IL_0024: ldnull
+IL_0025: ldftn System.Boolean Jotunn.Managers.RenderManager::IsVisualComponent(UnityEngine.Component)
+IL_002b: newobj System.Void System.Func`2<UnityEngine.Component,System.Boolean>::.ctor(System.Object,System.IntPtr)
+IL_0030: call System.Boolean System.Linq.Enumerable::Any<UnityEngine.Component>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+IL_0035: brtrue.s IL_0039
+IL_0037: ldnull
+IL_0038: ret
+IL_0039: call System.Boolean Jotunn.Utils.GUIUtils::get_IsHeadless()
+IL_003e: brfalse.s IL_0047
+IL_0040: ldarg.0
+IL_0041: call UnityEngine.Sprite Jotunn.Managers.RenderManager::get_EmptySprite()
+IL_0046: ret
+IL_0047: ldarg.1
+IL_0048: callvirt System.Boolean Jotunn.Managers.RenderManager/RenderRequest::get_UseCache()
+IL_004d: brfalse.s IL_0067
+IL_004f: ldarg.0
+IL_0050: ldarg.1
+IL_0051: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_0056: ldarg.1
+IL_0057: callvirt BepInEx.BepInPlugin Jotunn.Managers.RenderManager/RenderRequest::get_TargetPlugin()
+IL_005c: ldloca.s V_0
+IL_005e: call System.Boolean Jotunn.Managers.RenderManager::ContainsIconCache(UnityEngine.GameObject,BepInEx.BepInPlugin,UnityEngine.Sprite&)
+IL_0063: brfalse.s IL_0067
+IL_0065: ldloc.0
+IL_0066: ret
+IL_0067: ldarg.0
+IL_0068: ldfld UnityEngine.Camera Jotunn.Managers.RenderManager::Renderer
+IL_006d: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0072: brtrue.s IL_007a
+IL_0074: ldarg.0
+IL_0075: call System.Void Jotunn.Managers.RenderManager::SetupRendering()
+IL_007a: ldarg.1
+IL_007b: call Jotunn.Managers.RenderManager/RenderObject Jotunn.Managers.RenderManager::SpawnRenderClone(Jotunn.Managers.RenderManager/RenderRequest)
+IL_0080: stloc.1
+IL_0081: ldloc.1
+IL_0082: brtrue.s IL_0086
+IL_0084: ldnull
+IL_0085: ret
+IL_0086: ldarg.0
+IL_0087: ldloc.1
+IL_0088: call UnityEngine.Sprite Jotunn.Managers.RenderManager::RenderSprite(Jotunn.Managers.RenderManager/RenderObject)
+IL_008d: stloc.2
+IL_008e: ldarg.1
+IL_008f: callvirt System.Boolean Jotunn.Managers.RenderManager/RenderRequest::get_UseCache()
+IL_0094: brfalse.s IL_00a9
+IL_0096: ldarg.0
+IL_0097: ldarg.1
+IL_0098: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_009d: ldarg.1
+IL_009e: callvirt BepInEx.BepInPlugin Jotunn.Managers.RenderManager/RenderRequest::get_TargetPlugin()
+IL_00a3: ldloc.2
+IL_00a4: call System.Void Jotunn.Managers.RenderManager::CacheIcon(UnityEngine.GameObject,BepInEx.BepInPlugin,UnityEngine.Sprite)
+IL_00a9: ldloc.2
+IL_00aa: ret
+Jotunn.Managers.RenderManager/RenderObject Jotunn.Managers.RenderManager::SpawnRenderClone(Jotunn.Managers.RenderManager/RenderRequest)
+IL_0000: newobj System.Void UnityEngine.GameObject::.ctor()
+IL_0005: stloc.0
+IL_0006: ldloc.0
+IL_0007: ldc.i4.0
+IL_0008: callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+IL_000d: ldarg.0
+IL_000e: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_0013: ldloc.0
+IL_0014: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0019: call !!0 UnityEngine.Object::Instantiate<UnityEngine.GameObject>(!!0,UnityEngine.Transform)
+IL_001e: stloc.1
+IL_001f: ldloc.0
+IL_0020: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0025: ldarg.0
+IL_0026: call System.Boolean Jotunn.Managers.RenderManager::RecursivelyRemoveComponents(UnityEngine.Transform,Jotunn.Managers.RenderManager/RenderRequest)
+IL_002b: brtrue.s IL_0044
+IL_002d: ldstr "Sprite could not be rendered for {0} due to components not being removed."
+IL_0032: ldarg.0
+IL_0033: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_0038: call System.String System.String::Format(System.String,System.Object)
+IL_003d: call System.Void Jotunn.Logger::LogWarning(System.Object)
+IL_0042: ldnull
+IL_0043: ret
+IL_0044: ldloc.1
+IL_0045: call System.Void Jotunn.Managers.RenderManager::SetLayerRecursive(UnityEngine.GameObject)
+IL_004a: ldloc.1
+IL_004b: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0050: ldnull
+IL_0051: callvirt System.Void UnityEngine.Transform::SetParent(UnityEngine.Transform)
+IL_0056: ldloc.0
+IL_0057: call System.Void UnityEngine.Object::DestroyImmediate(UnityEngine.Object)
+IL_005c: ldloc.1
+IL_005d: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0062: call UnityEngine.Vector3 UnityEngine.Vector3::get_zero()
+IL_0067: callvirt System.Void UnityEngine.Transform::set_position(UnityEngine.Vector3)
+IL_006c: ldloc.1
+IL_006d: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0072: ldarg.0
+IL_0073: callvirt UnityEngine.Quaternion Jotunn.Managers.RenderManager/RenderRequest::get_Rotation()
+IL_0078: callvirt System.Void UnityEngine.Transform::set_rotation(UnityEngine.Quaternion)
+IL_007d: ldloc.1
+IL_007e: ldarg.0
+IL_007f: ldfld UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+IL_0084: callvirt System.String UnityEngine.Object::get_name()
+IL_0089: callvirt System.Void UnityEngine.Object::set_name(System.String)
+IL_008e: ldloca.s V_2
+IL_0090: ldc.r4 1000
+IL_0095: ldc.r4 1000
+IL_009a: ldc.r4 1000
+IL_009f: call System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+IL_00a4: ldloca.s V_3
+IL_00a6: ldc.r4 -1000
+IL_00ab: ldc.r4 -1000
+IL_00b0: ldc.r4 -1000
+IL_00b5: call System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+IL_00ba: ldloc.1
+IL_00bb: callvirt !!0[] UnityEngine.GameObject::GetComponentsInChildren<UnityEngine.Renderer>()
+IL_00c0: stloc.s V_6
+IL_00c2: ldc.i4.0
+IL_00c3: stloc.s V_7
+IL_00c5: br.s IL_0114
+IL_00c7: ldloc.s V_6
+IL_00c9: ldloc.s V_7
+IL_00cb: ldelem.ref
+IL_00cc: stloc.s V_8
+IL_00ce: ldloc.s V_8
+IL_00d0: isinst UnityEngine.MeshRenderer
+IL_00d5: brtrue.s IL_00e0
+IL_00d7: ldloc.s V_8
+IL_00d9: isinst UnityEngine.SkinnedMeshRenderer
+IL_00de: brfalse.s IL_010e
+IL_00e0: ldloc.2
+IL_00e1: ldloc.s V_8
+IL_00e3: callvirt UnityEngine.Bounds UnityEngine.Renderer::get_bounds()
+IL_00e8: stloc.s V_9
+IL_00ea: ldloca.s V_9
+IL_00ec: call UnityEngine.Vector3 UnityEngine.Bounds::get_min()
+IL_00f1: call UnityEngine.Vector3 UnityEngine.Vector3::Min(UnityEngine.Vector3,UnityEngine.Vector3)
+IL_00f6: stloc.2
+IL_00f7: ldloc.3
+IL_00f8: ldloc.s V_8
+IL_00fa: callvirt UnityEngine.Bounds UnityEngine.Renderer::get_bounds()
+IL_00ff: stloc.s V_9
+IL_0101: ldloca.s V_9
+IL_0103: call UnityEngine.Vector3 UnityEngine.Bounds::get_max()
+IL_0108: call UnityEngine.Vector3 UnityEngine.Vector3::Max(UnityEngine.Vector3,UnityEngine.Vector3)
+IL_010d: stloc.3
+IL_010e: ldloc.s V_7
+IL_0110: ldc.i4.1
+IL_0111: add
+IL_0112: stloc.s V_7
+IL_0114: ldloc.s V_7
+IL_0116: ldloc.s V_6
+IL_0118: ldlen
+IL_0119: conv.i4
+IL_011a: blt.s IL_00c7
+IL_011c: ldloc.1
+IL_011d: callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+IL_0122: ldloc.2
+IL_0123: ldloc.3
+IL_0124: call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+IL_0129: call UnityEngine.Vector3 UnityEngine.Vector3::op_UnaryNegation(UnityEngine.Vector3)
+IL_012e: ldc.r4 2
+IL_0133: call UnityEngine.Vector3 UnityEngine.Vector3::op_Division(UnityEngine.Vector3,System.Single)
+IL_0138: callvirt System.Void UnityEngine.Transform::set_position(UnityEngine.Vector3)
+IL_013d: ldloca.s V_4
+IL_013f: ldloc.2
+IL_0140: ldfld System.Single UnityEngine.Vector3::x
+IL_0145: call System.Single UnityEngine.Mathf::Abs(System.Single)
+IL_014a: ldloc.3
+IL_014b: ldfld System.Single UnityEngine.Vector3::x
+IL_0150: call System.Single UnityEngine.Mathf::Abs(System.Single)
+IL_0155: add
+IL_0156: ldloc.2
+IL_0157: ldfld System.Single UnityEngine.Vector3::y
+IL_015c: call System.Single UnityEngine.Mathf::Abs(System.Single)
+IL_0161: ldloc.3
+IL_0162: ldfld System.Single UnityEngine.Vector3::y
+IL_0167: call System.Single UnityEngine.Mathf::Abs(System.Single)
+IL_016c: add
+IL_016d: ldloc.2
+IL_016e: ldfld System.Single UnityEngine.Vector3::z
+IL_0173: call System.Single UnityEngine.Mathf::Abs(System.Single)
+IL_0178: ldloc.3
+IL_0179: ldfld System.Single UnityEngine.Vector3::z
+IL_017e: call System.Single UnityEngine.Mathf::Abs(System.Single)
+IL_0183: add
+IL_0184: call System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+IL_0189: ldloc.1
+IL_018a: ldc.i4.1
+IL_018b: callvirt !!0[] UnityEngine.GameObject::GetComponentsInChildren<UnityEngine.ParticleSystem>(System.Boolean)
+IL_0190: stloc.s V_10
+IL_0192: ldc.i4.0
+IL_0193: stloc.s V_11
+IL_0195: br.s IL_01b1
+IL_0197: ldloc.s V_10
+IL_0199: ldloc.s V_11
+IL_019b: ldelem.ref
+IL_019c: stloc.s V_12
+IL_019e: ldloc.s V_12
+IL_01a0: ldarg.0
+IL_01a1: callvirt System.Single Jotunn.Managers.RenderManager/RenderRequest::get_ParticleSimulationTime()
+IL_01a6: callvirt System.Void UnityEngine.ParticleSystem::Simulate(System.Single)
+IL_01ab: ldloc.s V_11
+IL_01ad: ldc.i4.1
+IL_01ae: add
+IL_01af: stloc.s V_11
+IL_01b1: ldloc.s V_11
+IL_01b3: ldloc.s V_10
+IL_01b5: ldlen
+IL_01b6: conv.i4
+IL_01b7: blt.s IL_0197
+IL_01b9: ldloc.1
+IL_01ba: callvirt !!0 UnityEngine.GameObject::AddComponent<TimedDestruction>()
+IL_01bf: stloc.s V_5
+IL_01c1: ldloc.s V_5
+IL_01c3: ldc.r4 1
+IL_01c8: callvirt System.Void TimedDestruction::Trigger(System.Single)
+IL_01cd: ldloc.1
+IL_01ce: ldloc.s V_4
+IL_01d0: newobj System.Void Jotunn.Managers.RenderManager/RenderObject::.ctor(UnityEngine.GameObject,UnityEngine.Vector3)
+IL_01d5: dup
+IL_01d6: ldarg.0
+IL_01d7: stfld Jotunn.Managers.RenderManager/RenderRequest Jotunn.Managers.RenderManager/RenderObject::Request
+IL_01dc: ret
+System.Boolean Jotunn.Managers.RenderManager::RecursivelyRemoveComponents(UnityEngine.Transform,Jotunn.Managers.RenderManager/RenderRequest)
+IL_0000: ldarg.0
+IL_0001: callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+IL_0006: stloc.0
+IL_0007: ldc.i4.0
+IL_0008: stloc.2
+IL_0009: br.s IL_001d
+IL_000b: ldarg.0
+IL_000c: ldloc.2
+IL_000d: callvirt UnityEngine.Transform UnityEngine.Transform::GetChild(System.Int32)
+IL_0012: ldarg.1
+IL_0013: call System.Boolean Jotunn.Managers.RenderManager::RecursivelyRemoveComponents(UnityEngine.Transform,Jotunn.Managers.RenderManager/RenderRequest)
+IL_0018: pop
+IL_0019: ldloc.2
+IL_001a: ldc.i4.1
+IL_001b: add
+IL_001c: stloc.2
+IL_001d: ldloc.2
+IL_001e: ldarg.0
+IL_001f: callvirt System.Int32 UnityEngine.Transform::get_childCount()
+IL_0024: blt.s IL_000b
+IL_0026: ldarg.0
+IL_0027: call System.Collections.Generic.List`1<System.Type> Jotunn.Managers.RenderManager::GetTopolocialSort(UnityEngine.Transform)
+IL_002c: stloc.1
+IL_002d: ldloc.1
+IL_002e: brtrue.s IL_0032
+IL_0030: ldc.i4.0
+IL_0031: ret
+IL_0032: ldloc.1
+IL_0033: callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.Type>::GetEnumerator()
+IL_0038: stloc.3
+IL_0039: br.s IL_00b0
+IL_003b: ldloca.s V_3
+IL_003d: call !0 System.Collections.Generic.List`1/Enumerator<System.Type>::get_Current()
+IL_0042: stloc.s V_4
+IL_0044: ldloc.0
+IL_0045: ldloc.s V_4
+IL_0047: callvirt UnityEngine.Component[] UnityEngine.GameObject::GetComponents(System.Type)
+IL_004c: stloc.s V_5
+IL_004e: ldc.i4.0
+IL_004f: stloc.s V_6
+IL_0051: br.s IL_00a8
+IL_0053: ldloc.s V_5
+IL_0055: ldloc.s V_6
+IL_0057: ldelem.ref
+IL_0058: stloc.s V_7
+IL_005a: ldloc.s V_7
+IL_005c: call System.Boolean Jotunn.Managers.RenderManager::IsRenderComponent(UnityEngine.Component)
+IL_0061: brtrue.s IL_00a2
+IL_0063: ldarg.1
+IL_0064: callvirt System.Single Jotunn.Managers.RenderManager/RenderRequest::get_ParticleSimulationTime()
+IL_0069: ldc.r4 0
+IL_006e: blt.un.s IL_0079
+IL_0070: ldloc.s V_7
+IL_0072: call System.Boolean Jotunn.Managers.RenderManager::IsParticleComponent(UnityEngine.Component)
+IL_0077: brtrue.s IL_00a2
+IL_0079: nop
+IL_007a: ldloc.s V_7
+IL_007c: call System.Void UnityEngine.Object::DestroyImmediate(UnityEngine.Object)
+IL_0081: leave.s IL_00a2
+IL_0083: stloc.s V_8
+IL_0085: ldstr "Component {0} could not be removed. Exception caught: {1}"
+IL_008a: ldloc.s V_7
+IL_008c: ldloc.s V_8
+IL_008e: callvirt System.String System.Exception::get_Message()
+IL_0093: call System.String System.String::Format(System.String,System.Object,System.Object)
+IL_0098: call System.Void Jotunn.Logger::LogError(System.Object)
+IL_009d: ldc.i4.0
+IL_009e: stloc.s V_9
+IL_00a0: leave.s IL_00cb
+IL_00a2: ldloc.s V_6
+IL_00a4: ldc.i4.1
+IL_00a5: add
+IL_00a6: stloc.s V_6
+IL_00a8: ldloc.s V_6
+IL_00aa: ldloc.s V_5
+IL_00ac: ldlen
+IL_00ad: conv.i4
+IL_00ae: blt.s IL_0053
+IL_00b0: ldloca.s V_3
+IL_00b2: call System.Boolean System.Collections.Generic.List`1/Enumerator<System.Type>::MoveNext()
+IL_00b7: brtrue.s IL_003b
+IL_00b9: leave.s IL_00c9
+IL_00bb: ldloca.s V_3
+IL_00bd: constrained. System.Collections.Generic.List`1/Enumerator<System.Type>
+IL_00c3: callvirt System.Void System.IDisposable::Dispose()
+IL_00c8: endfinally
+IL_00c9: ldc.i4.1
+IL_00ca: ret
+IL_00cb: ldloc.s V_9
+IL_00cd: ret
+UnityEngine.GameObject Jotunn.Managers.RenderManager/RenderRequest::Target
+System.Int32 Jotunn.Managers.RenderManager/RenderRequest::<Width>k__BackingField
+System.Int32 Jotunn.Managers.RenderManager/RenderRequest::<Height>k__BackingField
+UnityEngine.Quaternion Jotunn.Managers.RenderManager/RenderRequest::<Rotation>k__BackingField
+System.Single Jotunn.Managers.RenderManager/RenderRequest::<FieldOfView>k__BackingField
+System.Single Jotunn.Managers.RenderManager/RenderRequest::<DistanceMultiplier>k__BackingField
+System.Action`1<UnityEngine.Sprite> Jotunn.Managers.RenderManager/RenderRequest::<Callback>k__BackingField
+BepInEx.BepInPlugin Jotunn.Managers.RenderManager/RenderRequest::<TargetPlugin>k__BackingField
+System.Boolean Jotunn.Managers.RenderManager/RenderRequest::<UseCache>k__BackingField
+System.Single Jotunn.Managers.RenderManager/RenderRequest::<ParticleSimulationTime>k__BackingField
+System.Int32 Jotunn.Managers.RenderManager/RenderRequest::get_Width()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Width(System.Int32)
+System.Int32 Jotunn.Managers.RenderManager/RenderRequest::get_Height()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Height(System.Int32)
+UnityEngine.Quaternion Jotunn.Managers.RenderManager/RenderRequest::get_Rotation()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Rotation(UnityEngine.Quaternion)
+System.Single Jotunn.Managers.RenderManager/RenderRequest::get_FieldOfView()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_FieldOfView(System.Single)
+System.Single Jotunn.Managers.RenderManager/RenderRequest::get_DistanceMultiplier()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_DistanceMultiplier(System.Single)
+System.Action`1<UnityEngine.Sprite> Jotunn.Managers.RenderManager/RenderRequest::get_Callback()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_Callback(System.Action`1<UnityEngine.Sprite>)
+BepInEx.BepInPlugin Jotunn.Managers.RenderManager/RenderRequest::get_TargetPlugin()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_TargetPlugin(BepInEx.BepInPlugin)
+System.Boolean Jotunn.Managers.RenderManager/RenderRequest::get_UseCache()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_UseCache(System.Boolean)
+System.Void Jotunn.Managers.RenderManager/RenderRequest::.ctor(UnityEngine.GameObject)
+System.Single Jotunn.Managers.RenderManager/RenderRequest::get_ParticleSimulationTime()
+System.Void Jotunn.Managers.RenderManager/RenderRequest::set_ParticleSimulationTime(System.Single)
+System.Void Jotunn.Entities.CustomPiece::.ctor(UnityEngine.GameObject,System.String,System.Boolean)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: ldarg.1
+IL_000d: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_0012: ldarg.0
+IL_0013: ldarg.1
+IL_0014: callvirt !!0 UnityEngine.GameObject::GetComponent<Piece>()
+IL_0019: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_001e: ldarg.0
+IL_001f: ldarg.2
+IL_0020: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_0025: ldarg.0
+IL_0026: ldarg.3
+IL_0027: call System.Void Jotunn.Entities.CustomPiece::set_FixReference(System.Boolean)
+IL_002c: ret
+System.Void Jotunn.Entities.CustomPiece::.ctor(UnityEngine.GameObject,System.Boolean,Jotunn.Configs.PieceConfig)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: ldarg.1
+IL_000d: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_0012: ldarg.0
+IL_0013: ldarg.1
+IL_0014: callvirt !!0 UnityEngine.GameObject::GetComponent<Piece>()
+IL_0019: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_001e: ldarg.0
+IL_001f: ldarg.3
+IL_0020: callvirt System.String Jotunn.Configs.PieceConfig::get_PieceTable()
+IL_0025: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_002a: ldarg.0
+IL_002b: ldarg.2
+IL_002c: call System.Void Jotunn.Entities.CustomPiece::set_FixReference(System.Boolean)
+IL_0031: ldarg.0
+IL_0032: ldc.i4.1
+IL_0033: call System.Void Jotunn.Entities.CustomPiece::set_FixConfig(System.Boolean)
+IL_0038: ldarg.0
+IL_0039: ldarg.3
+IL_003a: callvirt System.String Jotunn.Configs.PieceConfig::get_Category()
+IL_003f: call System.Void Jotunn.Entities.CustomPiece::set_Category(System.String)
+IL_0044: ldarg.0
+IL_0045: ldarg.3
+IL_0046: callvirt System.String[] Jotunn.Configs.PieceConfig::get_Usage()
+IL_004b: call System.Void Jotunn.Entities.CustomPiece::set_Usage(System.String[])
+IL_0050: ldarg.3
+IL_0051: ldarg.1
+IL_0052: callvirt System.Void Jotunn.Configs.PieceConfig::Apply(UnityEngine.GameObject)
+IL_0057: ret
+System.Void Jotunn.Entities.CustomPiece::.ctor(UnityEngine.AssetBundle,System.String,Jotunn.Configs.PieceConfig)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: ldarg.2
+IL_000d: stfld System.String Jotunn.Entities.CustomPiece::fallbackPieceName
+IL_0012: ldarg.0
+IL_0013: call BepInEx.BepInPlugin Jotunn.Entities.CustomEntity::get_SourceMod()
+IL_0018: ldarg.1
+IL_0019: ldarg.2
+IL_001a: ldloca.s V_0
+IL_001c: call System.Boolean Jotunn.Utils.AssetUtils::TryLoadPrefab(BepInEx.BepInPlugin,UnityEngine.AssetBundle,System.String,UnityEngine.GameObject&)
+IL_0021: brtrue.s IL_0024
+IL_0023: ret
+IL_0024: ldarg.0
+IL_0025: ldloc.0
+IL_0026: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_002b: ldarg.0
+IL_002c: ldarg.0
+IL_002d: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0032: callvirt !!0 UnityEngine.GameObject::GetComponent<Piece>()
+IL_0037: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_003c: ldarg.0
+IL_003d: ldarg.3
+IL_003e: callvirt System.String Jotunn.Configs.PieceConfig::get_PieceTable()
+IL_0043: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_0048: ldarg.0
+IL_0049: ldc.i4.0
+IL_004a: call System.Void Jotunn.Entities.CustomPiece::set_FixReference(System.Boolean)
+IL_004f: ldarg.0
+IL_0050: ldc.i4.1
+IL_0051: call System.Void Jotunn.Entities.CustomPiece::set_FixConfig(System.Boolean)
+IL_0056: ldarg.0
+IL_0057: ldarg.3
+IL_0058: callvirt System.String Jotunn.Configs.PieceConfig::get_Category()
+IL_005d: call System.Void Jotunn.Entities.CustomPiece::set_Category(System.String)
+IL_0062: ldarg.0
+IL_0063: ldarg.3
+IL_0064: callvirt System.String[] Jotunn.Configs.PieceConfig::get_Usage()
+IL_0069: call System.Void Jotunn.Entities.CustomPiece::set_Usage(System.String[])
+IL_006e: ldarg.3
+IL_006f: ldarg.0
+IL_0070: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0075: callvirt System.Void Jotunn.Configs.PieceConfig::Apply(UnityEngine.GameObject)
+IL_007a: ret
+System.Void Jotunn.Entities.CustomPiece::.ctor(System.String,System.Boolean,System.String)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: call Jotunn.Managers.PrefabManager Jotunn.Managers.PrefabManager::get_Instance()
+IL_0011: ldarg.1
+IL_0012: ldarg.2
+IL_0013: callvirt UnityEngine.GameObject Jotunn.Managers.PrefabManager::CreateEmptyPrefab(System.String,System.Boolean)
+IL_0018: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_001d: ldarg.0
+IL_001e: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0023: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0028: brtrue.s IL_0032
+IL_002a: ldarg.0
+IL_002b: ldarg.1
+IL_002c: stfld System.String Jotunn.Entities.CustomPiece::fallbackPieceName
+IL_0031: ret
+IL_0032: ldarg.0
+IL_0033: ldarg.0
+IL_0034: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0039: callvirt !!0 UnityEngine.GameObject::AddComponent<Piece>()
+IL_003e: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_0043: ldarg.0
+IL_0044: call Piece Jotunn.Entities.CustomPiece::get_Piece()
+IL_0049: ldarg.1
+IL_004a: stfld System.String Piece::m_name
+IL_004f: ldarg.0
+IL_0050: ldarg.3
+IL_0051: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_0056: ret
+System.Void Jotunn.Entities.CustomPiece::.ctor(System.String,System.Boolean,Jotunn.Configs.PieceConfig)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: call Jotunn.Managers.PrefabManager Jotunn.Managers.PrefabManager::get_Instance()
+IL_0011: ldarg.1
+IL_0012: ldarg.2
+IL_0013: callvirt UnityEngine.GameObject Jotunn.Managers.PrefabManager::CreateEmptyPrefab(System.String,System.Boolean)
+IL_0018: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_001d: ldarg.0
+IL_001e: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0023: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0028: brtrue.s IL_0032
+IL_002a: ldarg.0
+IL_002b: ldarg.1
+IL_002c: stfld System.String Jotunn.Entities.CustomPiece::fallbackPieceName
+IL_0031: ret
+IL_0032: ldarg.0
+IL_0033: ldarg.0
+IL_0034: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0039: callvirt !!0 UnityEngine.GameObject::AddComponent<Piece>()
+IL_003e: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_0043: ldarg.0
+IL_0044: ldarg.3
+IL_0045: callvirt System.String Jotunn.Configs.PieceConfig::get_PieceTable()
+IL_004a: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_004f: ldarg.0
+IL_0050: ldc.i4.1
+IL_0051: call System.Void Jotunn.Entities.CustomPiece::set_FixConfig(System.Boolean)
+IL_0056: ldarg.0
+IL_0057: ldarg.3
+IL_0058: callvirt System.String Jotunn.Configs.PieceConfig::get_Category()
+IL_005d: call System.Void Jotunn.Entities.CustomPiece::set_Category(System.String)
+IL_0062: ldarg.0
+IL_0063: ldarg.3
+IL_0064: callvirt System.String[] Jotunn.Configs.PieceConfig::get_Usage()
+IL_0069: call System.Void Jotunn.Entities.CustomPiece::set_Usage(System.String[])
+IL_006e: ldarg.3
+IL_006f: ldarg.0
+IL_0070: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0075: callvirt System.Void Jotunn.Configs.PieceConfig::Apply(UnityEngine.GameObject)
+IL_007a: ret
+System.Void Jotunn.Entities.CustomPiece::.ctor(System.String,System.String,System.String)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: call Jotunn.Managers.PrefabManager Jotunn.Managers.PrefabManager::get_Instance()
+IL_0011: ldarg.1
+IL_0012: ldarg.2
+IL_0013: callvirt UnityEngine.GameObject Jotunn.Managers.PrefabManager::CreateClonedPrefab(System.String,System.String)
+IL_0018: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_001d: ldarg.0
+IL_001e: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0023: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0028: brtrue.s IL_0032
+IL_002a: ldarg.0
+IL_002b: ldarg.1
+IL_002c: stfld System.String Jotunn.Entities.CustomPiece::fallbackPieceName
+IL_0031: ret
+IL_0032: ldarg.0
+IL_0033: ldarg.0
+IL_0034: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0039: callvirt !!0 UnityEngine.GameObject::GetComponent<Piece>()
+IL_003e: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_0043: ldarg.0
+IL_0044: ldarg.3
+IL_0045: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_004a: ret
+System.Void Jotunn.Entities.CustomPiece::.ctor(System.String,System.String,Jotunn.Configs.PieceConfig)
+IL_0000: ldarg.0
+IL_0001: call System.Reflection.Assembly System.Reflection.Assembly::GetCallingAssembly()
+IL_0006: call System.Void Jotunn.Entities.CustomEntity::.ctor(System.Reflection.Assembly)
+IL_000b: ldarg.0
+IL_000c: call Jotunn.Managers.PrefabManager Jotunn.Managers.PrefabManager::get_Instance()
+IL_0011: ldarg.1
+IL_0012: ldarg.2
+IL_0013: callvirt UnityEngine.GameObject Jotunn.Managers.PrefabManager::CreateClonedPrefab(System.String,System.String)
+IL_0018: stfld UnityEngine.GameObject Jotunn.Entities.CustomPiece::<PiecePrefab>k__BackingField
+IL_001d: ldarg.0
+IL_001e: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0023: call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+IL_0028: brtrue.s IL_0032
+IL_002a: ldarg.0
+IL_002b: ldarg.1
+IL_002c: stfld System.String Jotunn.Entities.CustomPiece::fallbackPieceName
+IL_0031: ret
+IL_0032: ldarg.0
+IL_0033: ldarg.0
+IL_0034: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0039: callvirt !!0 UnityEngine.GameObject::GetComponent<Piece>()
+IL_003e: stfld Piece Jotunn.Entities.CustomPiece::<Piece>k__BackingField
+IL_0043: ldarg.0
+IL_0044: ldarg.3
+IL_0045: callvirt System.String Jotunn.Configs.PieceConfig::get_PieceTable()
+IL_004a: call System.Void Jotunn.Entities.CustomPiece::set_PieceTable(System.String)
+IL_004f: ldarg.0
+IL_0050: ldc.i4.1
+IL_0051: call System.Void Jotunn.Entities.CustomPiece::set_FixConfig(System.Boolean)
+IL_0056: ldarg.0
+IL_0057: ldarg.3
+IL_0058: callvirt System.String Jotunn.Configs.PieceConfig::get_Category()
+IL_005d: call System.Void Jotunn.Entities.CustomPiece::set_Category(System.String)
+IL_0062: ldarg.0
+IL_0063: ldarg.3
+IL_0064: callvirt System.String[] Jotunn.Configs.PieceConfig::get_Usage()
+IL_0069: call System.Void Jotunn.Entities.CustomPiece::set_Usage(System.String[])
+IL_006e: ldarg.3
+IL_006f: ldarg.0
+IL_0070: call UnityEngine.GameObject Jotunn.Entities.CustomPiece::get_PiecePrefab()
+IL_0075: callvirt System.Void Jotunn.Configs.PieceConfig::Apply(UnityEngine.GameObject)
+IL_007a: ret
+System.String Jotunn.Configs.RequirementConfig::<Item>k__BackingField
+System.Int32 Jotunn.Configs.RequirementConfig::<Amount>k__BackingField
+System.Int32 Jotunn.Configs.RequirementConfig::<AmountPerLevel>k__BackingField
+System.Boolean Jotunn.Configs.RequirementConfig::<Recover>k__BackingField
+System.String Jotunn.Configs.RequirementConfig::get_Item()
+System.Void Jotunn.Configs.RequirementConfig::set_Item(System.String)
+System.Int32 Jotunn.Configs.RequirementConfig::get_Amount()
+System.Void Jotunn.Configs.RequirementConfig::set_Amount(System.Int32)
+System.Int32 Jotunn.Configs.RequirementConfig::get_AmountPerLevel()
+System.Void Jotunn.Configs.RequirementConfig::set_AmountPerLevel(System.Int32)
+System.Boolean Jotunn.Configs.RequirementConfig::get_Recover()
+System.Void Jotunn.Configs.RequirementConfig::set_Recover(System.Boolean)
+System.Void Jotunn.Configs.RequirementConfig::.ctor()
+System.Void Jotunn.Configs.RequirementConfig::.ctor(System.String,System.Int32,System.Int32,System.Boolean)
+Piece/Requirement Jotunn.Configs.RequirementConfig::GetRequirement()
+System.Boolean Jotunn.Configs.RequirementConfig::IsValid()

@@ -1,0 +1,28 @@
+TYPE Chat in assembly_valheim.dll
+System.Void Chat::SetNpcText(UnityEngine.GameObject,UnityEngine.Vector3,System.Single,System.Single,System.String,System.String,System.Boolean)
+System.Void Chat::ClearNpcText(UnityEngine.GameObject)
+System.Void Chat::ClearNpcText(Chat/NpcText)
+TYPE Trader in assembly_valheim.dll
+System.Single Trader::m_dialogHeight public=True
+EffectList Trader::m_randomTalkFX public=True
+EffectList Trader::m_randomGreetFX public=True
+EffectList Trader::m_randomGoodbyeFX public=True
+EffectList Trader::m_randomStartTradeFX public=True
+EffectList Trader::m_randomBuyFX public=True
+EffectList Trader::m_randomSellFX public=True
+TYPE ZSFX in assembly_valheim.dll
+UnityEngine.AudioClip[] ZSFX::m_audioClips public=True
+TYPE Localization in assembly_guiutils.dll
+System.String Localization::GetSelectedLanguage()
+UnityEngine.GameObject Jotunn.Managers.GUIManager::CreateWoodpanel(UnityEngine.Transform,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Single)
+UnityEngine.GameObject Jotunn.Managers.GUIManager::CreateWoodpanel(UnityEngine.Transform,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Single,System.Boolean)
+UnityEngine.GameObject Jotunn.Managers.GUIManager::CreateText(System.String,UnityEngine.Transform,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Font,System.Int32,UnityEngine.Color,System.Boolean,UnityEngine.Color,System.Single,System.Single,System.Boolean)
+UnityEngine.GameObject Jotunn.Managers.GUIManager::CreateButton(System.String,UnityEngine.Transform,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Single)
+UnityEngine.GameObject Jotunn.Managers.GUIManager::CreateInputField(UnityEngine.Transform,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.UI.InputField/ContentType,System.String,System.Int32,System.Single,System.Single)
+System.Void Jotunn.Managers.GUIManager::ApplyScrollRectStyle(UnityEngine.UI.ScrollRect)
+System.Void Jotunn.Managers.GUIManager::ApplyScrollbarStyle(UnityEngine.UI.Scrollbar)
+CreateScrollView inspected: returns Canvas wrapper, child ScrollRect, automatic content layout; direct DefaultControls hierarchy used instead.
+Compiled assembly version: 0.1.5.0
+IL_0005: callvirt System.String Localization::GetSelectedLanguage()
+IL_0057: callvirt System.Void Chat::SetNpcText(UnityEngine.GameObject,UnityEngine.Vector3,System.Single,System.Single,System.String,System.String,System.Boolean)
+IL_016a: callvirt System.Void UnityEngine.AudioSource::Play()

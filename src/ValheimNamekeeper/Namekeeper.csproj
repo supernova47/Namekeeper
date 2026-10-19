@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SuperNova.ValheimNamekeeper</AssemblyName>
+    <RootNamespace>SuperNova.ValheimNamekeeper</RootNamespace>
+    <Version>0.3.10</Version>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <UnityEngineFacade Condition="'$(UnityEngineFacade)' == '' and Exists('$(ValheimDir)/valheim_Data/Managed/UnityEngine.dll')">$(ValheimDir)/valheim_Data/Managed/UnityEngine.dll</UnityEngineFacade>
+    <UnityEngineFacade Condition="'$(UnityEngineFacade)' == '' and Exists('$(ValheimDir)/unstripped_corlib/UnityEngine.dll')">$(ValheimDir)/unstripped_corlib/UnityEngine.dll</UnityEngineFacade>
+  </PropertyGroup>
+  <Target Name="ValidateUnityEngineFacade" BeforeTargets="ResolveReferences" Condition="!Exists('$(UnityEngineFacade)')">
+    <Error Text="UnityEngine.dll facade missing. Please locate it inside Valheim/valheim_Data/Managed or Valheim/unstripped_corlib and pass -p:UnityEngineFacade=FULL_PATH_TO_DLL." />
+  </Target>
+  <ItemGroup>
+    <Reference Include="BepInEx"><HintPath>$(BepInExDir)/core/BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(BepInExDir)/core/0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Jotunn"><HintPath>$(JotunnDll)</HintPath><Private>false</Private></Reference>
+    <Reference Include="assembly_utils"><HintPath>$(ValheimDir)/valheim_Data/Managed/assembly_utils.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="assembly_guiutils"><HintPath>$(ValheimDir)/valheim_Data/Managed/assembly_guiutils.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="assembly_valheim"><HintPath>$(ValheimDir)/valheim_Data/Managed/assembly_valheim.dll</HintPath><Private>false</Private></Reference>
+    <!-- BepInEx BaseUnityPlugin references MonoBehaviour through the UnityEngine facade.
+         CoreModule alone does not satisfy the compiler on the user's 2026 game build. -->
+    <Reference Include="UnityEngine"><HintPath>$(UnityEngineFacade)</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.AudioModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.AudioModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.AssetBundleModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.AssetBundleModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.PhysicsModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.PhysicsModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.ParticleSystemModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.IMGUIModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.InputLegacyModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.InputLegacyModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.AnimationModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.AnimationModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.UI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(ValheimDir)/valheim_Data/Managed/Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.ImageConversionModule"><HintPath>$(ValheimDir)/valheim_Data/Managed/UnityEngine.ImageConversionModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets/sign_ru.png" LogicalName="Namekeeper.Assets.sign_ru.png" />
+    <EmbeddedResource Include="Assets/sign_en.png" LogicalName="Namekeeper.Assets.sign_en.png" />
+  </ItemGroup>
+</Project>

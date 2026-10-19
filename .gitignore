@@ -1,0 +1,15 @@
+/audit/
+/.dotnet-cli-home/
+/.nuget-packages/
+/dist/
+/src/**/bin/
+/src/**/obj/
+/tests/**/bin/
+/tests/**/obj/
+/tests/**/TestResults/
+/tests/__pycache__/
+BuildLog.txt
+*.user
+*.suo
+/RECOVERY_NOTE.ru.md
+

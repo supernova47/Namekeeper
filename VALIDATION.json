@@ -1,0 +1,78 @@
+{
+  "version": "0.3.10",
+  "author": "SuperNova",
+  "date": "2026-10-18",
+  "status": "0.3.10 Thunderstore release build passed: 56 regression tests, 14 compiled IL checks, 24 native prefabs, and package integrity checks; live in-game/network validation pending.",
+  "network_compatibility": {
+    "level": "EveryoneMustHaveMod",
+    "version_strictness": "Patch",
+    "gameplay_config_entries_synced": 11,
+    "recipe_amounts_updated_in_place": true,
+    "legacy_0_3_7_server_enforces_versions": false
+  },
+  "dll": {
+    "assembly_version": "0.3.10.0",
+    "bytes": 160256,
+    "sha256": "715A27622C3A0BF09A208757541FB1EE2C2C5596484F35C3C5CC4751149950A8"
+  },
+  "build": {
+    "valheim_version": "1.0.20",
+    "bepinex_version": "5.4.23.5",
+    "jotunn_version": "2.30.2",
+    "unity_version": "6.0.0.75",
+    "dotnet_sdk": "10.0.203",
+    "target_framework": "netstandard2.1",
+    "errors": 0,
+    "warnings": 2,
+    "warning_codes": [
+      "MSB3277"
+    ],
+    "regression_tests_run": true,
+    "regression_tests_passed": 56,
+    "compiled_il_checks_run": true,
+    "compiled_il_checks_passed": 14,
+    "native_manifest_check": "pass",
+    "native_manifest_assets_reviewed": 24
+  },
+  "icon": {
+    "file": "icon.png",
+    "resolution": "256x256",
+    "ai_generated": true
+  },
+  "packages": {
+    "ValheimNamekeeper-0.3.10.zip": {
+      "sha256": "6D11703688F6BBCA2B541A5514B33A9CDA938CDCA7DFF3FCC97A99BA317D97E4",
+      "bytes": 103408,
+      "entries": 7,
+      "single_root": true,
+      "embedded_dll_matches_build": true
+    },
+    "ValheimNamekeeper-0.3.10-SOURCE.zip": {
+      "sha256": "80E95C56F038C47886EBDE4004F76023D6543E23BCA2F095057E3856543841B6",
+      "bytes": 268938,
+      "entries": 101,
+      "single_root": true,
+      "embedded_dll_matches_build": null
+    },
+    "thunderstore/ValheimNamekeeper-0.3.10.zip": {
+      "sha256": "8DE168A133211D3E580108F9F185682FA6A1BE4BA8D28FCF3F6CA43E3ED95D7F",
+      "bytes": 192730,
+      "entries": 8,
+      "single_root": false,
+      "embedded_dll_matches_build": true
+    },
+    "r2modman/SuperNova-ValheimNamekeeper-0.3.10.zip": {
+      "sha256": "C1786D83AE6C0A53241248C93AD1815C1847519B19F205BE8A948A8AD375BF07",
+      "bytes": 192747,
+      "entries": 8,
+      "single_root": false,
+      "embedded_dll_matches_build": true
+    }
+  },
+  "game_launched": false,
+  "dedicated_server_tested": false,
+  "version_mismatch_tested": false,
+  "game_profile_modified": false,
+  "worlds_modified": false,
+  "readme_sha256": "41F07109850742444CD87997FCD83730085CAEE281D3746BF7F49210D663D039"
+}

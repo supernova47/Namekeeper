@@ -1,0 +1,2 @@
+PASS: Harmony sorted display postfixes Nexus -> Namekeeper; reversed input=False
+PASS: Harmony sorted display postfixes Nexus -> Namekeeper; reversed input=True

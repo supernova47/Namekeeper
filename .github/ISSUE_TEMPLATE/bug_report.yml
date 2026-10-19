@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a reproducible problem with Valheim Namekeeper.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Before submitting, check whether the issue is already open. Remove IP addresses, passwords, world identifiers, and other private details from logs.
+  - type: input
+    id: mod-version
+    attributes:
+      label: Namekeeper version
+      placeholder: 0.3.10
+    validations:
+      required: true
+  - type: input
+    id: game-version
+    attributes:
+      label: Valheim version
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Multiplayer environment
+      options:
+        - Single-player
+        - Hosted co-op
+        - Dedicated server
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Client and server setup
+      description: For multiplayer, include whether Namekeeper versions match on the server and all clients.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log excerpt
+      description: Include only related lines and redact private information.
+      render: text
+    validations:
+      required: false

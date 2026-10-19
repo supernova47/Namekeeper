@@ -1,0 +1,2 @@
+8de168a133211d3e580108f9f185682fa6a1be4ba8d28fcf3f6ca43e3ed95d7f  ValheimNamekeeper-Thunderstore-0.3.10.zip
+80e95c56f038c47886ebde4004f76023d6543e23bca2f095057e3856543841b6  ValheimNamekeeper-Source-0.3.10.zip
