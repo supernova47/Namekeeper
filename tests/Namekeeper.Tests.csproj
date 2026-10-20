@@ -7,12 +7,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="../src/ValheimNamekeeper/CampDiscoveryMemory.cs" Link="CampDiscoveryMemory.cs" />
+    <Compile Include="../src/ValheimNamekeeper/MapAdminAccess.cs" Link="MapAdminAccess.cs" />
+    <Compile Include="../src/ValheimNamekeeper/CampFootprint.cs" Link="CampFootprint.cs" />
     <Compile Include="GameDoubles.cs" />
     <Compile Include="../src/ValheimNamekeeper/PersonalizedText.cs" Link="PersonalizedText.cs" />
     <Compile Include="../src/ValheimNamekeeper/TooltipTitleUpdater.cs" Link="TooltipTitleUpdater.cs" />
     <Compile Include="../src/ValheimNamekeeper/InventoryChangeDispatcher.cs" Link="InventoryChangeDispatcher.cs" />
     <Compile Include="../src/ValheimNamekeeper/InventoryTransaction.cs" Link="InventoryTransaction.cs" />
     <Compile Include="../src/ValheimNamekeeper/DialogueLines.cs" Link="DialogueLines.cs" />
+    <Compile Include="../src/ValheimNamekeeper/UiLanguagePolicy.cs" Link="UiLanguagePolicy.cs" />
     <Compile Include="../src/ValheimNamekeeper/DialogueScheduler.cs" Link="DialogueScheduler.cs" />
     <Compile Include="../src/ValheimNamekeeper/HudLayout.cs" Link="HudLayout.cs" />
     <Compile Include="../src/ValheimNamekeeper/WorkshopLayout.cs" Link="WorkshopLayout.cs" />

@@ -1,19 +1,33 @@
 {
-  "version": "0.3.10",
+  "version": "0.4.8",
   "author": "SuperNova",
-  "date": "2026-10-18",
-  "status": "0.3.10 Thunderstore release build passed: 56 regression tests, 14 compiled IL checks, 24 native prefabs, and package integrity checks; live in-game/network validation pending.",
+  "date": "2026-10-20",
+  "status": "0.4.8 candidate: compilation, 64 isolated tests, 30 structural IL checks and package validation passed. Live game/dedicated-server acceptance remains pending.",
   "network_compatibility": {
     "level": "EveryoneMustHaveMod",
     "version_strictness": "Patch",
-    "gameplay_config_entries_synced": 11,
+    "gameplay_config_entries_synced": 12,
     "recipe_amounts_updated_in_place": true,
-    "legacy_0_3_7_server_enforces_versions": false
+    "legacy_0_3_7_server_enforces_versions": false,
+    "operating_mode_synced": true,
+    "map_visibility_local": true,
+    "map_visibility_admin_command": "namekeeper_map on|off",
+    "map_server_rpc": "SN_Namekeeper_MapRequest_045 / SN_Namekeeper_MapReply_045, direct ZRpc",
+    "map_admin_validation": "Connected ready peer resolved from the callback connection; native ZNet.IsAdmin(socket.GetHostName()); no character-ID comparison",
+    "camp_combat_guard": "Blocks player attacks, queued attacks, and guardian powers inside generated Namekeeper camps.",
+    "camp_damage_guard": "Blocks WearNTear and non-player Character damage on local, RPC, and authoritative damage paths.",
+    "camp_ground_clear": "Native ClutterSystem.GetGroundInfo excludes active camp X/Z candidates; ResetGrass refreshes buffers; original terrain preserved",
+    "shop_discovery_icon": "Custom Meadow location names resolve to the native Vendor_BlackForest icon on every client.",
+    "ui_language_local": "Auto follows each client game locale; English and Russian overrides remain local.",
+    "new_camp_terrain_only": true,
+    "camp_seating": "Three vanilla Chair seats; native player attachment, animation and nearby-player occupancy; no furniture ZDO",
+    "discovery_history": "Player custom data keyed by world UID and camp X/Z; 150-metre approach and existing native pin required; no duplicate pins",
+    "food_contact": "Authored Hildir bowl and turnips copied in one common frame with original TRS; no procedural food placement, physics queries or Rigidbody"
   },
   "dll": {
-    "assembly_version": "0.3.10.0",
-    "bytes": 160256,
-    "sha256": "715A27622C3A0BF09A208757541FB1EE2C2C5596484F35C3C5CC4751149950A8"
+    "assembly_version": "0.4.8.0",
+    "bytes": 201216,
+    "sha256": "F3322F5B8041284AA782587EA8239C37194BC808BCC201941D604012335159D7"
   },
   "build": {
     "valheim_version": "1.0.20",
@@ -28,11 +42,20 @@
       "MSB3277"
     ],
     "regression_tests_run": true,
-    "regression_tests_passed": 56,
+    "regression_tests_passed": 64,
     "compiled_il_checks_run": true,
-    "compiled_il_checks_passed": 14,
+    "compiled_il_checks_passed": 30,
+    "compiled_il_checks_by_area": {
+      "registration": 4,
+      "visual_and_placement": 6,
+      "network_and_headless": 5,
+      "world_locations": 7,
+      "sanctuary": 5,
+      "camp_presentation": 3
+    },
+    "installer_syntax_check": "pass",
     "native_manifest_check": "pass",
-    "native_manifest_assets_reviewed": 24
+    "native_manifest_assets_reviewed": 38
   },
   "icon": {
     "file": "icon.png",
@@ -40,33 +63,23 @@
     "ai_generated": true
   },
   "packages": {
-    "ValheimNamekeeper-0.3.10.zip": {
-      "sha256": "6D11703688F6BBCA2B541A5514B33A9CDA938CDCA7DFF3FCC97A99BA317D97E4",
-      "bytes": 103408,
-      "entries": 7,
-      "single_root": true,
-      "embedded_dll_matches_build": true
+    "ValheimNamekeeper-0.4.8-SOURCE.zip": {
+      "sha256": "81EFDB45CD47E6FD25C188BBD1AD2422A9DFD5C72808F64B6A297BC6A1F521D4",
+      "bytes": 451551,
+      "entries": 149,
+      "embedded_dll_matches_build": null,
+      "manifest_version": "0.4.8",
+      "manifest_author": "SuperNova",
+      "readme_build_instructions": false
     },
-    "ValheimNamekeeper-0.3.10-SOURCE.zip": {
-      "sha256": "80E95C56F038C47886EBDE4004F76023D6543E23BCA2F095057E3856543841B6",
-      "bytes": 268938,
-      "entries": 101,
-      "single_root": true,
-      "embedded_dll_matches_build": null
-    },
-    "thunderstore/ValheimNamekeeper-0.3.10.zip": {
-      "sha256": "8DE168A133211D3E580108F9F185682FA6A1BE4BA8D28FCF3F6CA43E3ED95D7F",
-      "bytes": 192730,
-      "entries": 8,
-      "single_root": false,
-      "embedded_dll_matches_build": true
-    },
-    "r2modman/SuperNova-ValheimNamekeeper-0.3.10.zip": {
-      "sha256": "C1786D83AE6C0A53241248C93AD1815C1847519B19F205BE8A948A8AD375BF07",
-      "bytes": 192747,
-      "entries": 8,
-      "single_root": false,
-      "embedded_dll_matches_build": true
+    "thunderstore/ValheimNamekeeper-0.4.8.zip": {
+      "sha256": "C749677C0301F1224E121EA3B475985363D43DB71202D3E6DE81FD3DF1199F60",
+      "bytes": 214582,
+      "entries": 9,
+      "embedded_dll_matches_build": true,
+      "manifest_version": "0.4.8",
+      "manifest_author": "SuperNova",
+      "readme_build_instructions": false
     }
   },
   "game_launched": false,
@@ -74,5 +87,19 @@
   "version_mismatch_tested": false,
   "game_profile_modified": false,
   "worlds_modified": false,
-  "readme_sha256": "41F07109850742444CD87997FCD83730085CAEE281D3746BF7F49210D663D039"
+  "readme_sha256": "A286EDBB902494D5C48B29DE804BB75022230BAA1CC194700F90DF5377EF5D7C",
+  "native_meal_geometry": {
+    "source": "Hildir_camp / fi_vil_container_bucket01 + turnips",
+    "mesh_count": 19,
+    "food_mesh_count": 18,
+    "bowl_size_m": [
+      2.5851380836757665,
+      0.4881195749131706,
+      2.1264915628701564
+    ],
+    "native_relative_poses_preserved": true,
+    "max_distance_error_m": 1.0624834345662748E-13,
+    "physics_settling": false,
+    "live_unity_render_verified": false
+  }
 }

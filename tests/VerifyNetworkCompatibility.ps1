@@ -23,7 +23,7 @@ try {
 
     $awake = $plugin.Methods | Where-Object Name -eq 'Awake'
     $syncBindings = @($awake.Body.Instructions | Where-Object { [string]$_.Operand -match 'NamekeeperPlugin::BindSynced' })
-    if ($syncBindings.Count -ne 11) { throw 'All 11 gameplay-affecting service, recipe, shop, and text settings must be server-synchronized.' }
+    if ($syncBindings.Count -ne 12) { throw 'All 12 gameplay-affecting service, recipe, shop-mode, shop, and text settings must be server-synchronized.' }
     $bind = $plugin.Methods | Where-Object Name -eq 'BindSynced'
     $bindInstructions = @($bind.Body.Instructions)
     $syncCall = -1
@@ -37,6 +37,25 @@ try {
     Write-Output 'PASS gameplay configuration uses Jötunn server synchronization'
 
     $awakeCode = [string]::Join(' ', $awake.Body.Instructions)
+    if ($awakeCode -notmatch 'OperatingMode' -or $awakeCode -match 'RevealShopLocations' -or
+        $awakeCode -notmatch 'CommandManager::AddConsoleCommand') {
+        throw 'The operating mode must stay server-synchronized and map visibility must use the local admin command, not a config entry.'
+    }
+    $command = (TypeNamed 'RevealNamekeeperShopsCommand').Methods | Where-Object Name -eq 'RunCommand'
+    $commandCode = [string]::Join(' ', $command.Body.Instructions)
+    $mapServer = (TypeNamed 'ShopWorldLocations').Methods | Where-Object Name -eq 'ServerReceiveMapReveal'
+    $mapServerCode = [string]::Join(' ', $mapServer.Body.Instructions)
+    $adminCheck = (TypeNamed 'ShopWorldLocations').Methods | Where-Object Name -eq 'IsPeerAdmin'
+    $adminCheckCode = if ($adminCheck) { [string]::Join(' ', $adminCheck.Body.Instructions) } else { '' }
+    if ($commandCode -notmatch 'SetMapMarkersVisible' -or $mapServerCode -notmatch 'ZNet::GetPeers' -or
+        $mapServerCode -notmatch 'ShopWorldLocations::IsPeerAdmin' -or
+        $adminCheckCode -notmatch 'ISocket::GetHostName' -or
+        $adminCheckCode -notmatch 'ZNet::IsAdmin' -or
+        $adminCheckCode -match 'm_playerID' -or $mapServerCode -match 'CustomRPC') {
+        throw 'The direct map RPC must authorize the authenticated socket with the native admin check; character IDs and routed identities cannot grant access.'
+    }
+    Write-Output 'PASS operating mode is synced and map requests use authenticated transport identity'
+
     if ($awakeCode -notmatch 'GUIManager::IsHeadless' -or $awakeCode -notmatch 'NamekeeperGui::.ctor' -or
         $awakeCode.IndexOf('GUIManager::IsHeadless') -gt $awakeCode.IndexOf('NamekeeperGui::.ctor')) {
         throw 'The native HUD must only be constructed after headless detection.'
@@ -51,6 +70,6 @@ try {
         throw 'The synchronized shop recipe must update amounts while preserving its resolved resource references.'
     }
     Write-Output 'PASS synchronized shop recipe updates preserve vanilla resource references'
-    Write-Output '4 compiled network/headless checks passed; a live dedicated-server handshake still requires in-game validation.'
+    Write-Output '5 compiled network/headless checks passed; a live dedicated-server handshake still requires in-game validation.'
 }
 finally { $assembly.Dispose(); $resolver.Dispose() }

@@ -19,7 +19,7 @@ namespace SuperNova.ValheimNamekeeper
     {
         public const string Guid = "com.supernova.valheimnamekeeper";
         public const string Name = "SuperNova Valheim Namekeeper";
-        public const string Version = "0.3.10";
+        public const string Version = "0.4.8";
 
         internal static NamekeeperPlugin Instance;
         internal static ManualLogSource Log;
@@ -34,6 +34,7 @@ namespace SuperNova.ValheimNamekeeper
         internal static ConfigEntry<int> NameLimit;
         internal static ConfigEntry<int> DescriptionLimit;
         internal static ConfigEntry<bool> NeedRoof;
+        internal static ConfigEntry<string> OperatingMode;
         internal static ConfigEntry<bool> VisualEffects;
         internal static ConfigEntry<string> Language;
         internal static ConfigEntry<bool> DialogueEnabled;
@@ -69,8 +70,22 @@ namespace SuperNova.ValheimNamekeeper
             NameLimit = BindSynced("Text", "MaxNameLength", 40, "Maximum name length.", new AcceptableValueRange<int>(1, 256));
             DescriptionLimit = BindSynced("Text", "MaxDescriptionLength", 250, "Maximum description length.", new AcceptableValueRange<int>(1, 2000));
             NeedRoof = BindSynced("Shop", "RequireRoof", true, "Disable service without a roof above merchant.");
+            OperatingMode = BindSynced("Shop", "OperatingMode", ShopWorldLocations.WorldMode,
+                "WorldLocations (default): three hidden Meadows shops in newly generated worlds. HammerBuildable: use the current hammer-built shop. Restart required.",
+                new AcceptableValueList<string>(ShopWorldLocations.WorldMode, ShopWorldLocations.BuildableMode));
             VisualEffects = Config.Bind("Visual", "SuccessEffects", true, "Show gold particles after successful edit.");
-            Language = Config.Bind("UI", "Language", "English", "English or Russian.");
+            Language = Config.Bind("UI", "Language", "Auto",
+                new ConfigDescription("Auto follows each client's game language (Russian or English). English and Russian can be selected as local overrides.",
+                    new AcceptableValueList<string>("Auto", "English", "Russian")));
+            var gameLanguageMigration = Config.Bind("Internal", "GameLanguageDefault_044", false,
+                "Internal migration marker for per-client game-language selection.");
+            if (!gameLanguageMigration.Value)
+            {
+                // The previous default forced English for Russian-speaking clients. The new
+                // behavior follows each client's locale; manual overrides remain available.
+                Language.Value = "Auto";
+                gameLanguageMigration.Value = true;
+            }
             DialogueEnabled = Config.Bind("Dialogue", "Enabled", true, "Show local merchant lines above the NPC. Russian only when the game language is Russian; otherwise English.");
             VoiceEnabled = Config.Bind("Dialogue", "VoiceEnabled", true, "Play Hildir voice clips with merchant lines.");
             VoiceVolume = Config.Bind("Dialogue", "VoiceVolume", .7f,
@@ -78,6 +93,8 @@ namespace SuperNova.ValheimNamekeeper
 
             _headless = GUIManager.IsHeadless();
             if (!_headless) Ui = new NamekeeperGui();
+            if (!_headless && CommandManager.Instance != null)
+                CommandManager.Instance.AddConsoleCommand(new RevealNamekeeperShopsCommand());
             SynchronizationManager.OnConfigurationSynchronized += OnConfigurationSynchronized;
             _harmony = new Harmony(Guid);
             _harmony.PatchAll(typeof(NamekeeperPlugin).Assembly);
@@ -131,6 +148,8 @@ namespace SuperNova.ValheimNamekeeper
         {
             _refreshRecipesPending = true;
             _nextRecipeRefresh = 0f;
+            ShopRegistry.ApplyOperatingMode();
+            ShopWorldLocations.ApplyOperatingMode();
         }
 
         private void Update()
@@ -146,6 +165,7 @@ namespace SuperNova.ValheimNamekeeper
                 }
             }
             if (Ui != null) Ui.Tick();
+            ShopWorldLocations.TickMapPins();
         }
 
         private void LateUpdate()
@@ -157,6 +177,7 @@ namespace SuperNova.ValheimNamekeeper
         {
             PrefabManager.OnVanillaPrefabsAvailable -= ShopRegistry.Register;
             SynchronizationManager.OnConfigurationSynchronized -= OnConfigurationSynchronized;
+            ShopWorldLocations.Dispose();
             Ui?.Dispose();
             _harmony?.UnpatchSelf();
             if (Instance == this) Instance = null;

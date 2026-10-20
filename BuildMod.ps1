@@ -38,4 +38,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Compilation failed; no release package was cre
 & (Join-Path $root 'tests\VerifyRegistration.ps1') -CecilDll (Join-Path $BepInExDir 'core\Mono.Cecil.dll') 2>&1 | Tee-Object -FilePath "$root\BuildLog.txt" -Append
 & (Join-Path $root 'tests\VerifyVisualFixes.ps1') -CecilDll (Join-Path $BepInExDir 'core\Mono.Cecil.dll') 2>&1 | Tee-Object -FilePath "$root\BuildLog.txt" -Append
 & (Join-Path $root 'tests\VerifyNetworkCompatibility.ps1') -CecilDll (Join-Path $BepInExDir 'core\Mono.Cecil.dll') -JotunnDir (Split-Path -Parent $JotunnDll) 2>&1 | Tee-Object -FilePath "$root\BuildLog.txt" -Append
+& (Join-Path $root 'tests\VerifyWorldLocations.ps1') -CecilDll (Join-Path $BepInExDir 'core\Mono.Cecil.dll') -JotunnDir (Split-Path -Parent $JotunnDll) 2>&1 | Tee-Object -FilePath "$root\BuildLog.txt" -Append
+& (Join-Path $root 'tests\VerifySanctuary.ps1') -CecilDll (Join-Path $BepInExDir 'core\Mono.Cecil.dll') -JotunnDir (Split-Path -Parent $JotunnDll) -ValheimDir $ValheimDir 2>&1 | Tee-Object -FilePath "$root\BuildLog.txt" -Append
+& (Join-Path $root 'tests\VerifyCampPresentation.ps1') -CecilDll (Join-Path $BepInExDir 'core\Mono.Cecil.dll') -ValheimDir $ValheimDir 2>&1 | Tee-Object -FilePath "$root\BuildLog.txt" -Append
 & (Join-Path $root 'PackageMod.ps1')

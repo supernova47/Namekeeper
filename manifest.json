@@ -1,9 +1,9 @@
 {
   "name": "ValheimNamekeeper",
   "author": "SuperNova",
-  "version_number": "0.3.10",
+  "version_number": "0.4.8",
   "website_url": "https://github.com/supernova47/Namekeeper",
-  "description": "A Valheim merchant workshop for renaming and describing gear. Includes a buildable shop, separate roof, animated door, and server-synchronized multiplayer settings.",
+  "description": "Adds three localized, protected Meadows shops or the classic hammer-built shop. Server-synchronized. MIT licensed.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2351",
     "ValheimModding-Jotunn-2.30.2"

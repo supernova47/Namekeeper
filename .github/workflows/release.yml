@@ -25,7 +25,7 @@ jobs:
             echo "Tag $GITHUB_REF_NAME does not match manifest version $VERSION" >&2
             exit 1
           fi
-          THUNDERSTORE="release-assets/ValheimNamekeeper-Thunderstore-${VERSION}.zip"
+          THUNDERSTORE="release-assets/ValheimNamekeeper-${VERSION}.zip"
           SOURCE="release-assets/ValheimNamekeeper-Source-${VERSION}.zip"
           test -f "$THUNDERSTORE"
           test -f "$SOURCE"
@@ -33,6 +33,9 @@ jobs:
           (cd release-assets && sha256sum --check SHA256SUMS.txt)
           PACKAGE_VERSION="$(unzip -p "$THUNDERSTORE" manifest.json | jq -r '.version_number')"
           test "$PACKAGE_VERSION" = "$VERSION"
+          PACKAGE_AUTHOR="$(unzip -p "$THUNDERSTORE" manifest.json | jq -r '.author')"
+          test "$PACKAGE_AUTHOR" = "SuperNova"
+          test -f "release-assets/RELEASE_NOTES_${VERSION}.md"
 
       - name: Publish release assets
         env:
@@ -41,9 +44,9 @@ jobs:
         run: |
           VERSION="$(jq -r '.version_number' manifest.json)"
           gh release create "$GITHUB_REF_NAME" \
-            "release-assets/ValheimNamekeeper-Thunderstore-${VERSION}.zip" \
+            "release-assets/ValheimNamekeeper-${VERSION}.zip" \
             "release-assets/ValheimNamekeeper-Source-${VERSION}.zip" \
             release-assets/SHA256SUMS.txt \
             --verify-tag \
             --title "Valheim Namekeeper ${VERSION}" \
-            --generate-notes
+            --notes-file "release-assets/RELEASE_NOTES_${VERSION}.md"

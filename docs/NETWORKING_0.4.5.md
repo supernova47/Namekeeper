@@ -1,0 +1,11 @@
+# Namekeeper 0.4.5 networking notes
+
+- Install version 0.4.5 and its dependencies on the dedicated server and every client. Patch-version compatibility and the 12 server-synchronized gameplay settings are retained.
+- `namekeeper_map on|off` is unchanged. Map requests now use direct ZRpc registered on `ZNet.OnNewConnection`, with registration recovery for the current session. Authorization is bound to the callback's connection and Valheim's native socket-based admin check, matching the approach already used by Nexus. Steam/PlayFab/platform identity syntax remains Valheim's responsibility.
+- The server returns generated positions only to the authorized requesting connection. The client accepts a reply only from its current server connection and current request serial. Temporary markers and cached positions are cleared on reconnect/off. A 15-second timeout reports a missing reply. Discovered location icons are independent from temporary admin pins.
+- The shop ZDO anchors the camp. Existing coordinates, roof/door state, service data and player-built shops are retained. Only new location generation writes the terrain-leveling key; loading an existing shop or client proxy cannot opt an old camp into leveling.
+- Every peer reconstructs the same decorative layout and local grass/sanctuary features from the live shop. Game props have no loot inventories or separate ownership. Existing camp terrain is not leveled.
+- The two boars are visual camp residents with colliders and E interactions, not tame Characters. Feeding uses the shared world clock; petting uses a cosmetic shop RPC with a local cooldown. Pet reactions carry no currency, items or ownership state and are not an anti-cheat boundary.
+- Saved instances of the legacy Namekeeper-specific boar are removed by their ZDO owner without drops. The old prefab identity remains available during migration; normal Boar prefabs are unaffected.
+- Combat and damage protection still runs on clients and authoritative object owners. Interface, sign, dialogue, hover names and voice presentation remain local to each player.
+- No live server/profile/world is updated by this release process. The user installs the candidate on both sides and follows `TEST_PLAN_0.4.5.ru.md` for actual acceptance.

@@ -1,5 +1,94 @@
 # Changelog
 
+## 0.4.8 — Hildir's original feeding bowl
+
+- Replaced the floating carrot display with the complete vanilla bowl and turnip arrangement from Hildir's camp. Bowl and food retain their authored positions, rotations, and scales in one common frame.
+- Removed procedural carrot packing and its temporary collision queries. Only the complete meal is moved and rotated; food pieces receive no individual height adjustment, scaling, or physics.
+- Grounded the composition by the bowl's bottom and moved the two boars slightly closer together to match the native bowl's width. Names, pet interaction, facing, and animations are retained.
+- Preserved the approved rest area, discovery messages, grass clearing, protection, terrain, saved camp locations, merchant behavior, services, prices, and both operating modes.
+- Use one shared Thunderstore/r2modman archive with `author: SuperNova` in its manifest. No separate platform variants are created; the developer source snapshot is kept separately.
+- Existing worlds can use the update after restarting. Update server and clients together. Native-asset geometry checks and compilation do not replace the final in-game visual check.
+
+## 0.4.7 — camp seating, food displays, and discovery notices
+
+- Removed the deer-hide rug from generated camps. Added the approved rest area: an interactive vanilla bench, a full-size wooden table with decorative bread, cooked meat, and a tankard, and a fire moved slightly toward the camp centre.
+- Restored all three native bench seats and their standard interaction, attachment animation, and occupancy checks. Sitting uses the player's existing networked animation; the camp furniture has no loot or dismantling behavior.
+- Enlarged the shared bowl and its carrots. Six carrots are arranged in two layers and lowered against the actual bowl and food contact geometry. Temporary collision-query shapes are removed after placement, leaving a static decorative display.
+- Added a localized discovery banner and map notice within 150 metres of a generated shop once its native location marker exists. Each character remembers each camp separately for each world, including across save/reload. Distant administrator map reveals do not trigger discovery notices.
+- Removed the generic camp-boundary discovery label to prevent a second banner when entering the dome. Native map icons and the administrator command are retained.
+- Kept existing terrain, camp positions, boars, merchant animations, protection, recipes, prices, saved identities, and both operating modes. Existing worlds can use this update; update the server and clients together.
+- Compilation and automated checks do not replace the in-game seating, carrot-contact, and discovery acceptance checklist.
+
+## 0.4.6 — camp grass and missing boars
+
+- Fixed the food-display exception that stopped camp initialization before the boars were created. Carrots now use their authored `attach` visual, preserving native size and excluding the unrelated equipment-offset model and prefab LOD references.
+- Isolated optional food/decor failures from animal initialization. Missing boars retry independently without duplicating successful animals; failed visual clones are cleaned up.
+- Added a direct exclusion in Valheim's procedural clutter generator for points inside each loaded camp. This removes grass, ferns and other ground clutter regardless of terrain-paint rules. Existing patches are refreshed when the camp loads.
+- Replaced the two small bowls with one large shared oval bowl containing seven full-size carrots. Food placement uses camp-local mesh bounds, so world rotation does not change its fit.
+- Preserved boar names, facing, animations, pet interaction, camp positions, existing terrain, admin map authorization, services, recipes and prices. Update both server and clients; an existing world can be used for verification.
+- Server/client logs from the user's 0.4.5 test confirmed successful administrator authorization and three returned locations. The grass/animal fixes in 0.4.6 still require in-game acceptance.
+
+## 0.4.5 — inhabited camps and authenticated map requests
+
+- Fixed the dedicated-server rejection of `namekeeper_map on`: requests now travel over the authenticated connection and use Valheim's native socket-based administrator check. Earlier builds incorrectly compared the character ID with the administrator's platform account ID.
+- Accept map replies only from the current server connection and current request. Clear temporary positions on reconnect, ignore stale replies, and report a request timeout.
+- Fixed a loading-screen exception caused by reading the world UID before the world existed.
+- Attached grass clearing, no-build bounds, monster exclusion, and sanctuary protection to the persistent shop instead of relying on a temporary location root. Ground clutter is refreshed after terrain processing.
+- New-world locations now target Meadows 800–3500 metres from the centre, with at least 1500 metres between shops and a gentler terrain limit. Only newly generated camps receive leveling and edge smoothing; existing camps keep their terrain and coordinates.
+- Added the approved camp layout: vanilla supply canopy, barrels, crates, a woodpile, a bench, a deer-hide rug, a fire, and eight perimeter trader rune stones. Objects retain their full size and are grounded after terrain rebuilding. Decorations provide no loot.
+- Replaced the old tamed animal with two stationary animated camp boars, Inkblot and Snout (Клякса and Пятачок in Russian). They face the same direction as the merchant, eat from carrot bowls, and respond to petting with an animation and native audio. They cannot be owned, followed, renamed, bred, or looted.
+- Retained the old boar prefab identity for migration and removed its saved instances without drops. Ordinary player animals are unaffected.
+- Kept both operating modes, shop services, prices, recipes, existing shop/roof identifiers, merchant gestures, per-client localization, and item metadata behavior.
+- This candidate still requires the Russian in-game checklist, including a dedicated-server admin request and existing/new world checks, before stable release.
+
+## 0.4.4 — protected, localized Meadow shops
+
+- Added a Haldor-style safe area around each generated shop: monsters do not spawn there, player attacks and guardian powers are blocked, and the shop, roof, boar, and other non-player targets cannot be damaged.
+- Clears ground clutter and vegetation across the camp using Valheim's native terrain modifier.
+- Fixed automatic shop map markers by reusing Haldor's native location icon; the existing admin-only `namekeeper_map on|off` command remains available for temporary personal map pins.
+- Made the shop interface follow each client's game language by default. Russian uses the Russian interface and sign; every other game language uses English. Manual local overrides remain available.
+- Kept the tamed boar beside the shop and constrained its movement while retaining native AI and idle animation.
+- Preserved both operating modes, world and building identifiers, recipes, prices, item data, and existing shop saves. World-spawned locations are still generated only when a new world is created.
+- This build needs in-game multiplayer checks for map discovery, safe-zone boundaries, terrain clearing, combat restrictions, boar behavior, and per-client localization.
+
+## 0.4.3 — dedicated-server admin ID matching
+
+- Fixed `namekeeper_map on` authorization when Valheim stores the administrator as a platform-formatted ID such as `V_<SteamID>` while the network peer exposes the numeric ID.
+- The server now parses platform-prefixed admin-list entries and matches their numeric user ID to the requesting peer before returning generated shop coordinates.
+- Kept coordinates restricted to the authorized caller and map pins local to that player's client.
+- Preserved shop placement, discovery, recipes, prices, services, and saved data.
+
+## 0.4.2 — dedicated-server map reveal fix
+
+- Fixed `namekeeper_map on` on dedicated servers: the client now requests the generated shop coordinates from the authoritative server instead of searching its own location list.
+- The server validates the requesting peer against its admin list and sends the positions only to that administrator. The temporary pins remain local to the caller.
+- Added immediate status feedback, including when no locations exist in the world's generated data yet; `off` still removes temporary pins.
+- Preserved Haldor-style discovery, world locations, hammer-built mode, item services, and saved data.
+
+## 0.4.1 — world placement and discovery fixes
+
+- Fixed Meadows shop placement: a zero maximum-vegetation setting rejected normal terrain, preventing all three locations from generating on the tested seed.
+- Kept Haldor-style discovery behavior so approaching a generated shop reveals its map marker and displays the localized discovery message.
+- Replaced the local `RevealShopLocations` config option with the admin-only `namekeeper_map on|off` console command. Temporary reveal markers are visible only to the administrator who runs the command.
+- Preserved the default `WorldLocations` mode, the hammer-built alternative, shop services, recipes, and saved data identifiers.
+- Valheim generates locations once per world. Create a new world to validate the placement fix; an existing world whose generation already failed will not be backfilled.
+
+## 0.4.0 — world-spawned merchant shops
+
+- Added a server-synchronized operating mode, with three Meadows merchant locations enabled by default and the hammer-built shop available as an alternative.
+- Cloned Haldor's native trader camp location settings and force-field visuals, then replaced the camp contents with Namekeeper's existing shop and female merchant.
+- Added a persistent, tame boar beside each world-spawned shop.
+- Added an optional local map setting that reveals all three shop locations with temporary map markers.
+- Added an MIT license file to the mod package and kept developer build instructions out of the packaged README.
+- Existing worlds retain their placed shops. Valheim's one-time world generation means the new locations are created in newly generated worlds; use HammerBuildable mode to add a shop to an existing world.
+- Preserved service behavior, prices, item data, the separate replacement roof, shop and roof prefab IDs, and existing ZDO keys.
+- Requires in-game testing of location placement, the force field, boar taming/persistence, map markers, and multiplayer synchronization before a stable release.
+
+## 0.3.11 — Thunderstore version update
+
+- Bumped the manifest, plugin, and assembly version to 0.3.11 so the package can be uploaded as a new Thunderstore release.
+- No gameplay behavior changed from 0.3.10.
+
 ## 0.3.10 — Thunderstore release update
 
 - Bumped the manifest, plugin, and assembly version to 0.3.10.

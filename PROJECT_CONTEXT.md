@@ -1,22 +1,15 @@
-# Контекст Namekeeper 0.3.10
+# Namekeeper 0.4.8 project context
 
-Версия 0.3.10 — выпуск для Thunderstore на основе приложенного ZIP версии 0.3.9. Обновлены только версия пакета/плагина и changelog; игровая логика и сохранённые идентификаторы не меняются. README обновлён на английском для публичного репозитория Namekeeper; игровая логика не менялась. Пользователь утвердил 0.3.7 как стабильную игровую сборку. Версия 0.3.8 добавила строгую совместимость клиента/сервера, синхронизацию серверных игровых настроек и поддержку запуска выделенного сервера без клиентского интерфейса. Версия 0.3.9 исправляет потерю иконок материалов при обновлении рецепта и документирует ограничение старых серверов: 0.3.7 не содержала проверки версии, поэтому старый сервер мог принять клиента 0.3.8.
+Author: SuperNova. License: MIT. README and changelog are English; Russian acceptance checklists are provided separately. Packaged README files do not contain compilation instructions.
 
-## Согласованные решения
+The default WorldLocations mode generates three independent hidden shops in Meadows in new worlds, 800–3500 metres from the centre and at least 1500 metres apart. Existing worlds and camp terrain are preserved. HammerBuildable keeps the established workshop and recipe. Mode and gameplay settings are synchronized by the server; every peer requires the same mod version.
 
-- Лавка остаётся открытым домиком из стандартных деталей Valheim с боковыми/задней стенами, прилавком, двускатной крышей и рабочей дверью. Торговка появляется самостоятельно и не зависит от двери.
-- Крыша остаётся отдельной постройкой и восстанавливается за 4 дерева. Её цена и баланс ресурсов не меняются в 0.3.5.
-- Строительство лавки открывается на этапе Чёрного леса по штатному знанию рецептурных ресурсов: 20 Wood, 10 FineWood, 10 RoundLog, 10 Stone, 100 Coins. Обе постройки остаются в `Misc` / «Разное». Услуги и сбросы стоят 25 монет за поле.
-- Торговка использует женскую модель игрока Valheim, длинные тёмные волосы и платье из игры. Спокойное ожидание — базовая стойка с опущенными руками; короткие жесты используются для приветствия, выбора, успеха, отказа и прощания. Русский/английский текст и голос Хильдир остаются.
-- Полки должны крепиться к стене; полные модели товаров не должны проходить сквозь неё. Щит и меч тоже располагаются вплотную к стене.
-- Торговка должна стоять на полу за прилавком, не пересекать столешницу и в ожидании использовать спокойную базовую позу с опущенными руками. Жесты плавно начинаются и штатно завершаются в idle; не принуждать возврат через `Animator.Rebind`, `Animator.Play` или кроссфейд к сохранённому state.
+Generated camps use a protected 12-metre area, native map icons, grass exclusion, vanilla decorations, two stationary animated boars and the approved rest area. Inkblot and Snout respond to petting without player ownership, following or breeding. The bench has three native Chair seats; the table's food is decorative. Local signs, interface and notices follow game language with English/Russian overrides.
 
-## Технические ограничения
+Version 0.4.8 replaces procedural carrots with the original Hildir bowl/turnips siblings in one shared frame. Preserve all authored local transforms and scales; ground and rotate the complete composition only. The native bowl centre is (6, -4.4) relative to the shop. Boars stand at (5.25, -3) and (6.75, -3). No physics packing or food pickup scripts remain.
 
-- Сохранить GUID `com.supernova.valheimnamekeeper`, prefab `SN_NamekeeperShop` / `SN_NamekeeperRoof`, ZDO-ключи, footprint, положение и настройки. Существующие лавки не перестраивать, значения конфигурации не менять.
-- Визуальный персонаж не должен создавать второй игрок, сетевой NPC, ZDO, интерактивный инвентарь или физические столкновения. Оставлять только подготовленную модель, скелет, LOD и Animator.
-- Не распространять игровые модели, библиотеки Valheim и аудио; использовать ссылки на штатные ресурсы игры.
-- Не устанавливать DLL в живой профиль, не менять конфиги и миры пользователя. Пользователь принял 0.3.7 как работающую стабильную версию; игровая проверка сетевых изменений 0.3.8/0.3.9 проводится отдельно.
+Preserve GUID com.supernova.valheimnamekeeper, shop/roof prefab identities, saved ZDO keys, item metadata, prices and construction costs. Merchant gestures return through the native animator; do not force idle through Animator.Rebind, Animator.Play or saved-state crossfades.
 
-Текущие документы: `README.md`, `BUILD_STATUS.md`, `docs/NETWORKING_0.3.10.md`, `docs/ARCHITECTURE_0.3.10.md` и `docs/TEST_PLAN_0.3.10.md`. История принятых решений и предыдущие версии сохранены в `docs/`.
+Publish one shared install ZIP for Thunderstore and r2modman with author SuperNova in manifest.json. Keep developer source snapshots separate. Do not distribute game models, Valheim libraries, audio or dependency DLLs. Building/packaging must not modify live profiles, server settings or worlds.
 
+Validation: compilation, 64 isolated tests and 30 structural/native-contract checks passed. Native Hildir geometry was inspected offline; live-game rendering and dedicated-server acceptance remain pending. Current documentation: BUILD_STATUS.md, docs/ARCHITECTURE_0.4.8.md, docs/NETWORKING_0.4.8.md and docs/TEST_PLAN_0.4.8.ru.md.

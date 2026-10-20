@@ -13,6 +13,7 @@ namespace SuperNova.ValheimNamekeeper
         internal const string RoofPrefabName = "SN_NamekeeperRoof";
         private static bool _registered;
         private static GameObject _shopPrefab;
+        private static GameObject _roofPrefab;
         private static bool _recipeRequirementsWarningLogged;
 
         internal static void Register()
@@ -49,6 +50,7 @@ namespace SuperNova.ValheimNamekeeper
                 SetRoofRequirements(roofConfig);
                 roofConfig.Icon = sourcePiece.m_icon;
                 var roof = new CustomPiece(RoofPrefabName, true, roofConfig);
+                _roofPrefab = roof.PiecePrefab;
                 PrepareRoot(roof.PiecePrefab, sourcePiece, sourceWear, true);
                 ShopModel.BuildRoof(roof.PiecePrefab.transform);
                 AddAnchors(roof.PiecePrefab.transform, WorkshopLayout.RoofAnchors());
@@ -58,6 +60,8 @@ namespace SuperNova.ValheimNamekeeper
 
                 _registered = true;
                 NamekeeperPlugin.Log.LogInfo("Registered workshop, separate roof and native snap anchors");
+                ApplyOperatingMode();
+                ShopWorldLocations.Register(_shopPrefab);
             }
             catch (Exception ex) { NamekeeperPlugin.Log.LogError("Shop registration failed: " + ex); }
             finally { PrefabManager.OnVanillaPrefabsAvailable -= Register; }
@@ -92,6 +96,19 @@ namespace SuperNova.ValheimNamekeeper
 
             _recipeRequirementsWarningLogged = false;
             return true;
+        }
+
+        internal static void ApplyOperatingMode()
+        {
+            bool buildable = ShopWorldLocations.IsBuildableMode;
+            SetHammerAvailability(_shopPrefab, buildable);
+            SetHammerAvailability(_roofPrefab, buildable);
+        }
+
+        private static void SetHammerAvailability(GameObject prefab, bool available)
+        {
+            var piece = prefab != null ? prefab.GetComponent<Piece>() : null;
+            if (piece != null) piece.m_enabled = available;
         }
 
         private static void SetShopRequirements(PieceConfig config)

@@ -12,4 +12,6 @@ BuildLog.txt
 *.user
 *.suo
 /RECOVERY_NOTE.ru.md
+/audit-*.txt
+/Install-NamekeeperOnServer.ps1
 

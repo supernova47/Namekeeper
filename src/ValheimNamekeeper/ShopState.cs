@@ -15,6 +15,12 @@ namespace SuperNova.ValheimNamekeeper
         private float _nextCheck;
         private float _nextRoofCheck;
         private bool _covered;
+        [SerializeField] private bool _isWorldLocation;
+        internal bool IsWorldLocation
+        {
+            get => _isWorldLocation;
+            set => _isWorldLocation = value;
+        }
 
         internal static readonly Vector3 MerchantLocalOffset = new Vector3(.12f, 0f, -.50f);
         internal Vector3 CounterPoint => transform.TransformPoint(new Vector3(0f, 1.25f, -1.5f));
@@ -36,17 +42,25 @@ namespace SuperNova.ValheimNamekeeper
             if (zdo == null) return;
             if (_view.IsOwner() && zdo.GetInt(ArrivedKey, 0) == 0)
             {
-                long now = (long)ZNet.instance.GetTimeSeconds();
-                long arrival = zdo.GetLong(SpawnAtKey, 0L);
-                if (arrival <= 0L)
-                {
-                    arrival = now + NamekeeperPlugin.SpawnDelay.Value;
-                    zdo.Set(SpawnAtKey, arrival);
-                }
-                if (now >= arrival)
+                if (IsWorldLocation)
                 {
                     zdo.Set(ArrivedKey, 1);
-                    NamekeeperPlugin.Log.LogInfo("Merchant arrived at " + transform.position);
+                    NamekeeperPlugin.Log.LogInfo("Merchant arrived at world location " + transform.position);
+                }
+                else
+                {
+                    long now = (long)ZNet.instance.GetTimeSeconds();
+                    long arrival = zdo.GetLong(SpawnAtKey, 0L);
+                    if (arrival <= 0L)
+                    {
+                        arrival = now + NamekeeperPlugin.SpawnDelay.Value;
+                        zdo.Set(SpawnAtKey, arrival);
+                    }
+                    if (now >= arrival)
+                    {
+                        zdo.Set(ArrivedKey, 1);
+                        NamekeeperPlugin.Log.LogInfo("Merchant arrived at " + transform.position);
+                    }
                 }
             }
             if (Arrived && _merchant == null && !ZNet.instance.IsDedicated())

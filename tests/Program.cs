@@ -31,6 +31,62 @@ internal static class Program
     {
         try
         {
+            Run("discovery is remembered once per character, camp and world", () =>
+            {
+                var first = new Dictionary<string, string>();
+                Check(CampDiscoveryMemory.Remember(first, 100, -9436, -4675));
+                Check(!CampDiscoveryMemory.Remember(first, 100, -9436, -4675));
+                Check(CampDiscoveryMemory.Remember(first, 100, 16804, 20374));
+                Check(CampDiscoveryMemory.Remember(first, 101, -9436, -4675));
+                Check(CampDiscoveryMemory.Remember(new Dictionary<string, string>(), 100, -9436, -4675));
+            });
+            Run("discovery survives save reload without touching other character metadata", () =>
+            {
+                var saved = new Dictionary<string, string> { ["other.mod"] = "preserve" };
+                Check(CampDiscoveryMemory.Remember(saved, long.MinValue, -1, 123));
+                var loaded = new Dictionary<string, string>(saved);
+                Check(!CampDiscoveryMemory.Remember(loaded, long.MinValue, -1, 123));
+                Equal("preserve", loaded["other.mod"]);
+                Check(CampDiscoveryMemory.Remember(loaded, long.MinValue, -12, 3));
+                Equal(3, loaded.Count);
+            });
+            Run("camp clutter exclusion covers the disk including its edge", () =>
+            {
+                Check(CampFootprint.Contains(100f, -200f, 100f, -200f, 12f));
+                Check(CampFootprint.Contains(112f, -200f, 100f, -200f, 12f));
+                Check(CampFootprint.Contains(100f, -212f, 100f, -200f, 12f));
+                Check(CampFootprint.Contains(108f, -192f, 100f, -200f, 12f));
+                Check(!CampFootprint.Contains(112.01f, -200f, 100f, -200f, 12f));
+                Check(!CampFootprint.Contains(112f, -188f, 100f, -200f, 12f));
+            });
+            Run("camp clutter exclusion keeps coordinates outside remote and negative camps untouched", () =>
+            {
+                Check(CampFootprint.Contains(-2036.6f, -1518.3f, -2036.6f, -1518.3f, 12f));
+                Check(!CampFootprint.Contains(0f, 0f, -2036.6f, -1518.3f, 12f));
+                Check(!CampFootprint.Contains(-2010f, -1518.3f, -2036.6f, -1518.3f, 12f));
+            });
+            Run("map access passes the authenticated platform identity unchanged to Valheim", () =>
+            {
+                string received = null;
+                Check(MapAdminAccess.Authorize(true, true, true, "V_76561190000000000",
+                    id => { received = id; return id == "V_76561190000000000"; }));
+                Equal("V_76561190000000000", received);
+            });
+            Run("map access uses the native admin decision for Steam, PlayFab and other transports", () =>
+            {
+                foreach (string id in new[] { "V_76561190000000000", "PlayFab_authenticated_account", "transport-specific-id" })
+                {
+                    Check(MapAdminAccess.Authorize(true, true, true, id, candidate => candidate == id));
+                    Check(!MapAdminAccess.Authorize(true, true, true, id, candidate => false));
+                }
+            });
+            Run("unready, disconnected, client-side and anonymous connections cannot reveal locations", () =>
+            {
+                foreach (var flags in new[] { new[] { false, true, true }, new[] { true, false, true }, new[] { true, true, false } })
+                    Check(!MapAdminAccess.Authorize(flags[0], flags[1], flags[2], "V_admin", id => throw new Exception("Must not check identity")));
+                Check(!MapAdminAccess.Authorize(true, true, true, null, id => true));
+                Check(!MapAdminAccess.Authorize(true, true, true, "", id => true));
+            });
             Run("legacy keys and independent instances", () =>
             {
                 var data = Both(); var other = new Dictionary<string, string>(data);
@@ -228,6 +284,14 @@ internal static class Program
                     }
                 }
                 Equal("", DialogueLines.Get(DialogueCue.None, "Russian", 0));
+            });
+            Run("shop interface follows each client's game language by default", () =>
+            {
+                Check(UiLanguagePolicy.UseRussian("Auto", "Russian"));
+                Check(!UiLanguagePolicy.UseRussian("Auto", "English"));
+                Check(!UiLanguagePolicy.UseRussian("Auto", "German"));
+                Check(UiLanguagePolicy.UseRussian("Russian", "English"));
+                Check(!UiLanguagePolicy.UseRussian("English", "Russian"));
             });
             Run("successful purchase replaces pending routine chatter", () =>
             {

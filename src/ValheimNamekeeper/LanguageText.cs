@@ -5,8 +5,20 @@ namespace SuperNova.ValheimNamekeeper
 {
     internal static class L
     {
-        internal static bool Ru => string.Equals(NamekeeperPlugin.Language.Value, "Russian", StringComparison.OrdinalIgnoreCase) ||
-                                   string.Equals(NamekeeperPlugin.Language.Value, "ru", StringComparison.OrdinalIgnoreCase);
+        internal static bool Ru
+        {
+            get
+            {
+                string gameLanguage = null;
+                try
+                {
+                    if (global::Localization.instance != null)
+                        gameLanguage = global::Localization.instance.GetSelectedLanguage();
+                }
+                catch (Exception) { }
+                return UiLanguagePolicy.UseRussian(NamekeeperPlugin.Language?.Value, gameLanguage);
+            }
+        }
         internal static string T(string en, string ru) => Ru ? ru : en;
         // Valheim 1.0 removed/renamed the old global Localization surface used by previous builds.
         // Jotunn's manager delegates unknown tokens to the active game's localization.

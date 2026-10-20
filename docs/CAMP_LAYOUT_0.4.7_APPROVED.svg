@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+<rect width="1000" height="1000" fill="#17241f"/>
+<style>text{font-family:'Segoe UI',sans-serif;fill:#f1e7ce;font-size:19px;text-anchor:middle}.small{font-size:16px}.title{font-size:28px;font-weight:bold}.stone{fill:#5f8178;stroke:#b4d0bc;stroke-width:2}.prop{fill:#71523a;stroke:#bda47c;stroke-width:2}</style>
+<text x="500" y="48" class="title">Лавка имён — предложение 0.4.7</text>
+<text x="500" y="80" class="small">Ковёр убираем • скамья с посадкой по E • стол с декоративной едой и напитком</text>
+<circle cx="500" cy="500" r="365" fill="#344331" stroke="#89baa2" stroke-width="4"/>
+<circle cx="500" cy="500" r="340" fill="none" stroke="#71866c" stroke-dasharray="7 9"/>
+<path d="M465 850 L465 565 L535 565 L535 850" fill="#7d7150" opacity=".8"/>
+<path d="M500 805 L500 640" stroke="#dfcc96" stroke-width="4"/><path d="M490 654 L500 637 L510 654" fill="none" stroke="#dfcc96" stroke-width="4"/>
+<text x="500" y="899">Вход и свободный проход к прилавку</text>
+<rect x="423" y="429" width="154" height="132" rx="4" class="prop"/>
+<path d="M423 442 L500 405 L577 442" fill="none" stroke="#bda47c" stroke-width="5"/>
+<text x="500" y="471">Лавка</text><text x="500" y="498" class="small">торговка ↓</text>
+<rect x="427" y="533" width="146" height="22" fill="#b78b57"/>
+<text x="500" y="525" class="small">прилавок</text>
+<path d="M473 425 L473 395 L524 395" stroke="#dfcc96" stroke-width="3" fill="none"/>
+<text x="572" y="389" class="small">Дверь / свободный подход</text>
+<rect x="277" y="399" width="100" height="106" rx="6" fill="#56634d" stroke="#c7b98e" stroke-width="2"/>
+<text x="327" y="426" class="small">Навес</text><text x="327" y="451" class="small">тюки, бочки</text><text x="327" y="476" class="small">корзины</text>
+<rect x="614" y="408" width="90" height="53" rx="7" class="prop"/><text x="659" y="432" class="small">Поленница</text><text x="659" y="453" class="small">и ящики</text>
+<circle cx="410" cy="634" r="27" fill="#a96535" stroke="#edbf74" stroke-width="3"/>
+<text x="410" y="640" class="small">Огонь</text>
+<rect x="293" y="584" width="22" height="100" rx="7" class="prop"/>
+<text x="278" y="729" class="small">Скамья: сесть по E</text><rect x="333" y="594" width="37" height="87" rx="4" class="prop"/><ellipse cx="351" cy="615" rx="10" ry="6" fill="#d8ad6e"/><ellipse cx="351" cy="641" rx="10" ry="6" fill="#a46b40"/><circle cx="351" cy="664" r="6" fill="#c6ac7b"/><text x="346" y="761" class="small">Стол: хлеб, мясо и кружка мёда</text>
+<ellipse cx="650" cy="591" rx="24" ry="37" fill="#835943" stroke="#d5bb93" stroke-width="2"/>
+<ellipse cx="737" cy="591" rx="24" ry="37" fill="#835943" stroke="#d5bb93" stroke-width="2"/>
+<text x="650" y="567" class="small">Клякса</text><text x="737" y="544" class="small">Пятачок</text>
+<text x="650" y="602">↓</text><text x="737" y="602">↓</text>
+<ellipse cx="694" cy="655" rx="66" ry="23" fill="#9c805b" stroke="#dbc7a0" stroke-width="2"/>
+<path d="M643 655 l12 -4 M658 655 l12 4 M674 655 l12 -4 M689 655 l12 4 M704 655 l12 -4 M719 655 l12 4 M734 655 l12 -4" stroke="#eaa04d" stroke-width="5" fill="none"/>
+<text x="700" y="710" class="small">Общая миска / 6 крупных морковок</text>
+<g class="stone"><ellipse cx="332" cy="210" rx="12" ry="21" transform="rotate(-30 332 210)"/><ellipse cx="668" cy="210" rx="12" ry="21" transform="rotate(30 668 210)"/><ellipse cx="210" cy="332" rx="12" ry="21" transform="rotate(-60 210 332)"/><ellipse cx="790" cy="332" rx="12" ry="21" transform="rotate(60 790 332)"/><ellipse cx="165" cy="500" rx="12" ry="21" transform="rotate(90 165 500)"/><ellipse cx="835" cy="500" rx="12" ry="21" transform="rotate(90 835 500)"/><ellipse cx="210" cy="668" rx="12" ry="21" transform="rotate(60 210 668)"/><ellipse cx="790" cy="668" rx="12" ry="21" transform="rotate(-60 790 668)"/></g>
+<text x="500" y="239">Рунические камни по границе купола</text>
+<text x="500" y="273" class="small">Задняя часть свободна для подхода к двери</text>
+<text x="500" y="948" class="small">Стол между скамьёй и огнём; огонь чуть ближе к центру. Основной проход свободен.</text>
+<text x="500" y="975" class="small">Кабаны смотрят от лавки, едят на месте; по E можно погладить.</text>
+</svg>

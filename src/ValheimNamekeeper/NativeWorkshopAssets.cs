@@ -11,6 +11,11 @@ namespace SuperNova.ValheimNamekeeper
     {
         private static readonly Dictionary<string, GameObject> Sources = new Dictionary<string, GameObject>();
 
+        internal static void Remember(string name, GameObject source)
+        {
+            if (source != null) Sources[name] = source;
+        }
+
         internal static GameObject Source(string name)
         {
             if (Sources.TryGetValue(name, out var cached) && cached != null) return cached;
@@ -59,6 +64,34 @@ namespace SuperNova.ValheimNamekeeper
             return copy;
         }
 
+        internal static Transform AddItemVisual(Transform parent, string prefab)
+        {
+            var source = Source(prefab);
+            var attach = source.transform.Find("attach");
+            if (attach == null) throw new InvalidOperationException("Native item attach missing: " + prefab);
+            var selected = new HashSet<Renderer>();
+            foreach (var renderer in attach.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var filter = renderer.GetComponent<MeshFilter>();
+                if (filter != null && filter.sharedMesh != null) selected.Add(renderer);
+            }
+            if (selected.Count == 0) throw new InvalidOperationException("Native item attach has no meshes: " + prefab);
+            var root = new GameObject("NativeItem_" + prefab);
+            root.transform.SetParent(parent, false);
+            try
+            {
+                // The full prefab also contains an inactive equipoffset model 51 m below
+                // its origin and unrelated LOD references. Use only the actual item visual.
+                // sourceRoot stays the prefab root so attach's authored scale is retained.
+                int layer = LayerMask.NameToLayer("piece");
+                CopyNode(attach, root.transform, source.transform, null, selected, false, false, layer < 0 ? 0 : layer);
+                if (root.GetComponentsInChildren<MeshRenderer>(true).Length == 0)
+                    throw new InvalidOperationException("Item visual copy produced no renderers: " + prefab);
+                return root.transform;
+            }
+            catch { UnityEngine.Object.DestroyImmediate(root); throw; }
+        }
+
         private static void SelectMeshes(Transform root, HashSet<Renderer> allLods,
             HashSet<Renderer> firstLods, HashSet<Renderer> selected)
         {
@@ -99,7 +132,8 @@ namespace SuperNova.ValheimNamekeeper
             foreach (Transform child in source)
             {
                 if (child.CompareTag("snappoint")) continue;
-                if (!child.gameObject.activeSelf && (wear == null || wear.m_new == null || child != wear.m_new.transform)) continue;
+                if (!child.gameObject.activeSelf && (wear == null || wear.m_new == null || child != wear.m_new.transform) &&
+                    !HasSelectedMesh(child, selected)) continue;
                 if (wear != null && ((wear.m_worn != null && child == wear.m_worn.transform) ||
                     (wear.m_broken != null && child == wear.m_broken.transform) ||
                     (wear.m_wet != null && child == wear.m_wet.transform))) continue;
@@ -112,6 +146,13 @@ namespace SuperNova.ValheimNamekeeper
                 return null;
             }
             return node.transform;
+        }
+
+        private static bool HasSelectedMesh(Transform root, HashSet<Renderer> selected)
+        {
+            foreach (var renderer in root.GetComponentsInChildren<MeshRenderer>(true))
+                if (selected.Contains(renderer)) return true;
+            return false;
         }
 
         private static void CopyCollider(Collider source, GameObject node)

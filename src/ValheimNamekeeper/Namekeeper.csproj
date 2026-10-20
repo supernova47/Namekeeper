@@ -5,7 +5,7 @@
     <Nullable>disable</Nullable>
     <AssemblyName>SuperNova.ValheimNamekeeper</AssemblyName>
     <RootNamespace>SuperNova.ValheimNamekeeper</RootNamespace>
-    <Version>0.3.10</Version>
+    <Version>0.4.8</Version>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <DebugType>portable</DebugType>
   </PropertyGroup>
@@ -23,6 +23,8 @@
     <Reference Include="assembly_utils"><HintPath>$(ValheimDir)/valheim_Data/Managed/assembly_utils.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="assembly_guiutils"><HintPath>$(ValheimDir)/valheim_Data/Managed/assembly_guiutils.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="assembly_valheim"><HintPath>$(ValheimDir)/valheim_Data/Managed/assembly_valheim.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SoftReferenceableAssets"><HintPath>$(ValheimDir)/valheim_Data/Managed/SoftReferenceableAssets.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Splatform"><HintPath>$(ValheimDir)/valheim_Data/Managed/Splatform.dll</HintPath><Private>false</Private></Reference>
     <!-- BepInEx BaseUnityPlugin references MonoBehaviour through the UnityEngine facade.
          CoreModule alone does not satisfy the compiler on the user's 2026 game build. -->
     <Reference Include="UnityEngine"><HintPath>$(UnityEngineFacade)</HintPath><Private>false</Private></Reference>
